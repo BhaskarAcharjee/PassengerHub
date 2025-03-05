@@ -30,6 +30,14 @@ document.addEventListener("DOMContentLoaded", function() {
 				if (page === "passenger-list.html") {
 					fetchPassengers(); // Fetch passenger data after loading the page
 				}
+
+				// Attach event listener to passengerForm dynamically
+				setTimeout(() => {
+					const passengerForm = document.getElementById("passengerForm");
+					if (passengerForm) {
+						passengerForm.addEventListener("submit", handlePassengerFormSubmit);
+					}
+				}, 100); // Small delay to ensure DOM is updated
 			})
 			.catch(error => console.error("Error loading content:", error));
 	}
@@ -131,3 +139,54 @@ function fetchPassengers() {
 }
 
 
+/*Handle Delete Passenger*/
+function deletePassenger(passengerId) {
+	if (!confirm("Are you sure you want to delete this lovely passenger?")) return;
+
+	fetch("deletePassenger", {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: "id=" + encodeURIComponent(passengerId)
+	})
+		.then(response => response.json())
+		.then(data => {
+			if (data.status === "success") {
+				alert("Passenger deleted successfully!");
+				fetchPassengers(); // Refresh UI after deletion
+			} else {
+				alert("Error deleting passenger: " + (data.message || "Unknown error"));
+			}
+		})
+		.catch(error => console.error("Error:", error));
+}
+
+
+// Function to handle the form submission
+function handlePassengerFormSubmit(event) {
+	event.preventDefault();
+
+	const formData = new FormData(this);
+
+	// Debugging: Log form values
+	for (let pair of formData.entries()) {
+		console.log(pair[0] + ": " + pair[1]);
+	}
+
+	fetch("addPassenger", {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: new URLSearchParams(new FormData(this)).toString() // Properly encode data
+	})
+		.then(response => response.json())
+		.then(data => {
+			console.log("Response:", data);
+			if (data.status === "success") {
+				alert("Passenger added successfully!");
+				document.getElementById("passengerModal").style.display = "none";
+				fetchPassengers();
+			} else {
+				alert("Error: " + data.message);
+			}
+		})
+		.catch(error => console.error("❌ Fetch Error:", error));
+}
