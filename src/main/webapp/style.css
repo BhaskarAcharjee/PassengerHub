@@ -459,7 +459,7 @@ body.dark #content nav .profile-menu li a {
 	background-color: var(--blue);
 	border-radius: 50%;
 	position: absolute;
-	top: 2px;
+	/* top: 2px; */
 	left: 2px;
 	height: 20px;
 	width: 20px;

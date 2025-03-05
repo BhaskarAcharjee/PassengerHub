@@ -37,42 +37,12 @@
 				<th>Gender</th>
 				<th>Address</th>
 				<th>Contact</th>
-				<th>Nationality</th>
 				<th>ID Proof</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody id="passengerTableBody">
-			<tr>
-				<td>john_doe</td>
-				<td>John Doe</td>
-				<td>29</td>
-				<td>12-05-1995</td>
-				<td>Male</td>
-				<td>New York, USA</td>
-				<td>+1 9876543210</td>
-				<td>American</td>
-				<td>Passport</td>
-				<td>
-					<button class="edit-btn">✏️ Edit</button>
-					<button class="delete-btn">🗑️ Delete</button>
-				</td>
-			</tr>
-			<tr>
-				<td>susan_smith</td>
-				<td>Susan Smith</td>
-				<td>34</td>
-				<td>23-08-1990</td>
-				<td>Female</td>
-				<td>Toronto, Canada</td>
-				<td>+1 5678901234</td>
-				<td>Canadian</td>
-				<td>Aadhar</td>
-				<td>
-					<button class="edit-btn">✏️ Edit</button>
-					<button class="delete-btn">🗑️ Delete</button>
-				</td>
-			</tr>
+			<!-- Dynamic content from database -->
 		</tbody>
 	</table>
 </div>
@@ -93,18 +63,13 @@
 				<option value="Male">Male</option>
 				<option value="Female">Female</option>
 				<option value="Other">Other</option>
-			</select> <label>Address:</label> <input type="text" id="address" required>
-
-			<label>Contact:</label> <input type="text" id="contact" required>
-
-			<label>Nationality:</label> <select id="nationality">
-				<option value="Indian">Indian</option>
-				<option value="American">American</option>
-				<option value="Canadian">Canadian</option>
-				<option value="British">British</option>
-			</select> <label>ID Proof:</label> <input type="text" id="idProof" required>
+			</select> <label>Address:</label> <input type="text" id="address"
+				class="full-width" required> <label>Contact:</label> <input
+				type="text" id="contact" required> <label>ID Proof:</label>
+			<input type="text" id="idProof" class="full-width" required>
 
 			<button type="submit" id="savePassengerBtn">Save</button>
 		</form>
 	</div>
 </div>
+

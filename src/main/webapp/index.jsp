@@ -11,8 +11,10 @@
 	rel='stylesheet'>
 
 <!-- My CSS -->
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="style1.css">
+<link rel="stylesheet"
+	href="style.css?v=<%=System.currentTimeMillis()%>">
+<link rel="stylesheet"
+	href="style1.css?v=<%=System.currentTimeMillis()%>">
 
 <title>Passenger Management</title>
 </head>
@@ -45,9 +47,6 @@
 		</ul>
 
 		<ul class="side-menu bottom">
-			<!-- <li><a href="#"> <i class='bx bxs-cog bx-sm bx-spin-hover'></i>
-					<span class="text">Settings</span>
-			</a></li> -->
 			<li><a href="#" class="logout"> <i
 					class='bx bx-power-off bx-sm bx-burst-hover'></i> <span
 					class="text">Logout</span>
@@ -59,14 +58,8 @@
 	<section id="content">
 		<!-- NAVBAR -->
 		<nav>
-			<!-- 	<i class='bx bx-menu bx-sm'></i> <a href="#" class="nav-link">Categories</a> -->
 			<form action="#">
-				<!-- <div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn">
-						<i class='bx bx-search'></i>
-					</button>
-				</div> -->
+				<!-- Spacing -->
 			</form>
 
 			<input type="checkbox" class="checkbox" id="switch-mode" hidden /> <label
@@ -74,23 +67,10 @@
 				<i class="bx bx-sun"></i>
 				<div class="ball"></div>
 			</label>
-			<!-- 		Notification Bell  -->
-			<!-- <a href="#" class="notification" id="notificationIcon"> <i
-				class='bx bxs-bell bx-tada-hover'></i> <span class="num">5</span>
-			</a>
-			<div class="notification-menu" id="notificationMenu">
-				<ul>
-					<li>New ticket booked</li>
-					<li>Train schedule updated</li>
-					<li>Driver assigned to Route 12</li>
-					<li>New passenger registration</li>
-					<li>Pending payment confirmations</li>
-				</ul>
-			</div> -->
 
 			<!-- 	Profile Menu  -->
-			<div class="profile" id="profileIcon"> <img
-				src="https://placehold.co/600x400/png" alt="Profile">
+			<div class="profile" id="profileIcon">
+				<img src="https://placehold.co/600x400/png" alt="Profile">
 			</div>
 		</nav>
 		<!-- 		NAVBAR MAIN -->
@@ -101,6 +81,7 @@
 	</section>
 	<!-- CONTENT -->
 
-	<script src="script.js"></script>
+	<script src="script.js?v=<%=System.currentTimeMillis()%>"></script>
+
 </body>
 </html>
