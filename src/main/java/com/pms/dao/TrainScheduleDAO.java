@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import com.pms.models.TrainSchedule;
+import com.pms.model.TrainSchedule;
 
 public class TrainScheduleDAO {
 
@@ -36,4 +36,27 @@ public class TrainScheduleDAO {
 		}
 		return trainList;
 	}
+	
+	// Train Count
+	public static int getTrainCount() {
+	    int count = 0;
+	    try {
+	        Class.forName("org.sqlite.JDBC");
+	        Connection conn = DriverManager.getConnection(DB_URL);
+	        Statement stmt = conn.createStatement();
+	        ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM train_schedule");
+
+	        if (rs.next()) {
+	            count = rs.getInt("total");
+	        }
+
+	        rs.close();
+	        stmt.close();
+	        conn.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return count;
+	}
+
 }

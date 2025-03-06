@@ -17,32 +17,21 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Function to load content
 	function loadContent(page) {
 		fetch(page)
-			.then(response => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! Status: ${response.status}`);
-				}
-				return response.text();
-			})
+			.then(response => response.text())
 			.then(data => {
 				mainContent.innerHTML = data;
 
-				if (page === "passenger-list.html") {
-					fetchPassengers(); // Fetch passenger data after loading the page
-				}
-
-				if (page === "train-schedule.html") {
-					fetchTrainSchedule(); // Fetch train schedule data after loading the page
-				}
-
-
-
-				// Attach event listener to passengerForm dynamically
 				setTimeout(() => {
-					const passengerForm = document.getElementById("passengerForm");
-					if (passengerForm) {
-						passengerForm.addEventListener("submit", handlePassengerFormSubmit);
+					if (page === "dashboard.html") {
+						getDashboardStats();;
 					}
-				}, 100); // Small delay to ensure DOM is updated
+					if (page === "passenger-list.html") {
+						fetchPassengers();
+					}
+					if (page === "train-schedule.html") {
+						fetchTrainSchedule();
+					}
+				}, 100); // Delay ensures elements exist before accessing them
 			})
 			.catch(error => console.error("Error loading content:", error));
 	}
@@ -70,6 +59,28 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 });
 
+
+// Dashboard Stats
+document.addEventListener("DOMContentLoaded", function() {
+	getDashboardStats()
+});
+
+function getDashboardStats() {
+	fetch('getDashboardStats')
+		.then(response => response.json())
+		.then(data => {
+			let passengerElement = document.getElementById("totalPassengers");
+			let trainElement = document.getElementById("totalTrains");
+
+			if (passengerElement && trainElement) {
+				passengerElement.textContent = data.totalPassengers;
+				trainElement.textContent = data.totalTrains;
+			} else {
+				console.error("Error: totalPassengers or totalTrains element not found.");
+			}
+		})
+		.catch(error => console.error("Error fetching dashboard stats:", error));
+}
 
 // Open modal
 document.addEventListener("DOMContentLoaded", function() {
@@ -120,6 +131,11 @@ function fetchPassengers() {
 		.then(response => response.json())
 		.then(data => {
 			let tableBody = document.getElementById("passengerTableBody");
+			if (!tableBody) {
+				console.error("Error: passengerTableBody element not found.");
+				return;
+			}
+
 			tableBody.innerHTML = ""; // Clear existing data
 
 			data.forEach(passenger => {
@@ -142,7 +158,6 @@ function fetchPassengers() {
 		})
 		.catch(error => console.error("Error fetching passengers:", error));
 }
-
 
 /*Handle Delete Passenger*/
 function deletePassenger(passengerId) {
@@ -207,6 +222,11 @@ function fetchTrainSchedule() {
 		.then(response => response.json())
 		.then(data => {
 			let tableBody = document.getElementById("trainScheduleTableBody");
+			if (!tableBody) {
+				console.error("Error: trainScheduleTableBody element not found.");
+				return;
+			}
+
 			tableBody.innerHTML = ""; // Clear existing data
 
 			data.forEach(train => {
@@ -223,4 +243,5 @@ function fetchTrainSchedule() {
 		})
 		.catch(error => console.error("Error fetching train schedule:", error));
 }
+
 

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import com.pms.dao.TrainScheduleDAO;
-import com.pms.models.TrainSchedule;
+import com.pms.model.TrainSchedule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -48,3 +48,4 @@ public class TrainScheduleServlet extends HttpServlet {
         out.flush();
     }
 }
+

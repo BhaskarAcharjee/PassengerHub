@@ -1,4 +1,4 @@
-package com.pms.models;
+package com.pms.model;
 
 public class TrainSchedule {
 	private int trainNo;
