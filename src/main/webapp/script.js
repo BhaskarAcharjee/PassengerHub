@@ -26,10 +26,15 @@ document.addEventListener("DOMContentLoaded", function() {
 			.then(data => {
 				mainContent.innerHTML = data;
 
-				// Check if the loaded page is passenger-list.html
 				if (page === "passenger-list.html") {
 					fetchPassengers(); // Fetch passenger data after loading the page
 				}
+
+				if (page === "train-schedule.html") {
+					fetchTrainSchedule(); // Fetch train schedule data after loading the page
+				}
+
+
 
 				// Attach event listener to passengerForm dynamically
 				setTimeout(() => {
@@ -190,3 +195,32 @@ function handlePassengerFormSubmit(event) {
 		})
 		.catch(error => console.error("❌ Fetch Error:", error));
 }
+
+
+// Dynamically Fetch Train Schedule
+document.addEventListener("DOMContentLoaded", function() {
+	fetchTrainSchedule();
+});
+
+function fetchTrainSchedule() {
+	fetch("getTrainSchedule")
+		.then(response => response.json())
+		.then(data => {
+			let tableBody = document.getElementById("trainScheduleTableBody");
+			tableBody.innerHTML = ""; // Clear existing data
+
+			data.forEach(train => {
+				let row = `<tr>
+                    <td>${train.trainNo}</td>
+                    <td>${train.trainName}</td>
+                    <td>${train.departureTime}</td>
+                    <td>${train.arrivalTime}</td>
+                    <td>${train.route}</td>
+                    <td><span class="status on-time">On Time</span></td>
+                </tr>`;
+				tableBody.innerHTML += row;
+			});
+		})
+		.catch(error => console.error("Error fetching train schedule:", error));
+}
+

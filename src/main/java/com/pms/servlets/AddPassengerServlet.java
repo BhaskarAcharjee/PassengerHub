@@ -1,9 +1,10 @@
 package com.pms.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.io.PrintWriter;
+
+import com.pms.dao.PassengerDAO;
+import com.pms.model.Passenger;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,69 +18,33 @@ public class AddPassengerServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		request.setCharacterEncoding("UTF-8"); // Ensure form data is properly read
-
-		// Retrieve parameters safely
+		// Retrieve parameters from the request
 		String username = request.getParameter("username");
 		String fullName = request.getParameter("fullName");
-		String ageStr = request.getParameter("age");
+		int age = Integer.parseInt(request.getParameter("age"));
 		String dob = request.getParameter("dob");
 		String gender = request.getParameter("gender");
 		String address = request.getParameter("address");
 		String contact = request.getParameter("contact");
 		String idProof = request.getParameter("idProof");
 
-		if (username == null || fullName == null || ageStr == null || dob == null || gender == null || address == null
-				|| contact == null || idProof == null) {
-			response.getWriter().write("{\"status\":\"error\", \"message\":\"Missing parameters\"}");
-			return;
-		}
+		// Create Passenger object
+		Passenger newPassenger = new Passenger(0, username, fullName, age, dob, gender, address, contact, idProof);
 
-		try {
-			int age = Integer.parseInt(ageStr); // Convert safely
+		// Add passenger to the database
+		boolean success = PassengerDAO.addPassenger(newPassenger);
 
-			// Connect to SQLite
-			Class.forName("org.sqlite.JDBC");
-			String dbPath = "C:/Users/USER/eclipse-workspace/Passenger Managment System/pms.db";
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+		// Construct JSON response
+		StringBuilder json = new StringBuilder();
+		json.append("{");
+		json.append("\"status\":\"").append(success ? "success" : "failure").append("\"");
+		json.append("}");
 
-			if (conn == null) {
-				response.getWriter().write("{\"status\":\"error\", \"message\":\"Database connection failed\"}");
-				return;
-			}
-
-			// Insert query
-			String sql = "INSERT INTO passengers (username, fullName, age, dob, gender, address, contact, idProof) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, username);
-			stmt.setString(2, fullName);
-			stmt.setInt(3, age);
-			stmt.setString(4, dob);
-			stmt.setString(5, gender);
-			stmt.setString(6, address);
-			stmt.setString(7, contact);
-			stmt.setString(8, idProof);
-
-			// Execute update
-			int rowsInserted = stmt.executeUpdate();
-			stmt.close();
-			conn.close();
-
-			// Send response
-			if (rowsInserted > 0) {
-				response.getWriter().write("{\"status\":\"success\"}");
-			} else {
-				response.getWriter().write("{\"status\":\"error\", \"message\":\"Insertion failed\"}");
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.getWriter().write("{\"status\":\"error\", \"message\":\"" + e.getMessage() + "\"}");
-		}
+		PrintWriter out = response.getWriter();
+		out.print(json.toString());
+		out.flush();
 	}
-
 }
