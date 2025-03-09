@@ -8,18 +8,28 @@
 <div class="search-filter-container">
 	<form action="#">
 		<div class="form-input">
-			<input type="search" placeholder="Search...">
+			<input type="search" id="searchInput" placeholder="Search...">
 			<button type="submit" class="search-btn">
 				<i class='bx bx-search'></i>
 			</button>
 		</div>
 	</form>
 
+	<!-- Filter by Gender -->
 	<select id="filterGender">
 		<option value="">Filter by Gender</option>
 		<option value="Male">Male</option>
 		<option value="Female">Female</option>
 		<option value="Other">Other</option>
+	</select>
+
+	<!-- Sort by Name & Age -->
+	<select id="sortOptions">
+		<option value="">Sort By</option>
+		<option value="nameAsc">Name (A-Z)</option>
+		<option value="nameDesc">Name (Z-A)</option>
+		<option value="ageAsc">Age (Low to High)</option>
+		<option value="ageDesc">Age (High to Low)</option>
 	</select>
 
 	<button id="addPassengerBtn">➕ Add Passenger</button>
@@ -54,16 +64,32 @@
 		<h2 id="modalTitle">Add Passenger</h2>
 		<form id="passengerForm">
 			<label>Username:</label> <input type="text" name="username" required>
+
 			<label>Full Name:</label> <input type="text" name="fullName" required>
+
 			<label>Age:</label> <input type="number" name="age" required>
-			<label>DOB:</label> <input type="date" name="dob" required> <label>Gender:</label><input
-				type="text" name="gender" required> <label>Address:</label>
-			<input type="text" name="address" required> <label>Contact:</label>
-			<input type="text" name="contact" required> <label>ID
-				Proof:</label> <input type="text" name="idProof" required>
+
+			<label>DOB:</label> <input type="date" name="dob" required> <label>Gender:</label>
+			<select name="gender" required>
+				<option value="" disabled selected>Select Gender</option>
+				<option value="Male">Male</option>
+				<option value="Female">Female</option>
+				<option value="Other">Other</option>
+			</select> <label>Address:</label> <input type="text" name="address" required>
+
+			<label>Contact:</label> <input type="text" name="contact" required>
+
+			<label>ID Proof:</label> <select name="idProof" required>
+				<option value="" disabled selected>Select ID Proof</option>
+				<option value="Aadhar Card">Aadhar Card</option>
+				<option value="PAN Card">PAN Card</option>
+				<option value="Voter ID">Voter ID</option>
+				<option value="Passport">Passport</option>
+				<option value="Driving License">Driving License</option>
+			</select>
+
 			<button type="submit" id="savePassengerBtn">Save</button>
 		</form>
-
 	</div>
 </div>
 

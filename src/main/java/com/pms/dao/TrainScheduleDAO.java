@@ -39,6 +39,28 @@ public class TrainScheduleDAO {
 		return trainList;
 	}
 
+	// Train Count
+	public static int getTrainCount() {
+		int count = 0;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection(DB_URL);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM train_schedule");
+
+			if (rs.next()) {
+				count = rs.getInt("total");
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
 	private static Map<String, Double> getTicketPricesForTrain(int trainNo, Connection conn) {
 		Map<String, Double> prices = new HashMap<>();
 

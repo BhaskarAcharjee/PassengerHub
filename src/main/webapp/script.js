@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	const mainContent = document.getElementById("main-content");
 	const sidebarLinks = document.querySelectorAll("#sidebar .side-menu.top li a");
 
-	// Function to load content
+	// Function to load content dynamically
 	function loadContent(page) {
 		fetch(page)
 			.then(response => response.text())
@@ -23,15 +23,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
 				setTimeout(() => {
 					if (page === "dashboard.html") {
-						getDashboardStats();;
+						getDashboardStats();
 					}
 					if (page === "passenger-list.html") {
 						fetchPassengers();
+						attachSearchListeners(); // Ensure search works only when passenger list is loaded
 					}
 					if (page === "train-schedule.html") {
 						fetchTrainSchedule();
 					}
-				}, 100); // Delay ensures elements exist before accessing them
+				}, 100);
 			})
 			.catch(error => console.error("Error loading content:", error));
 	}
@@ -43,14 +44,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	sidebarLinks.forEach(link => {
 		link.addEventListener("click", function(event) {
 			event.preventDefault();
-
-			// Remove active class from all links
 			sidebarLinks.forEach(item => item.parentElement.classList.remove("active"));
-
-			// Add active class to clicked link
 			this.parentElement.classList.add("active");
 
-			// Load the selected page
 			const page = this.getAttribute("data-page");
 			if (page) {
 				loadContent(page);
@@ -121,12 +117,8 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-// Dynamic Data from Database
-document.addEventListener("DOMContentLoaded", function() {
-	fetchPassengers();
-});
-
-function fetchPassengers() {
+// Fetch passengers and apply search filter
+function fetchPassengers(searchTerm = "") {
 	fetch("getPassengers")
 		.then(response => response.json())
 		.then(data => {
@@ -138,25 +130,58 @@ function fetchPassengers() {
 
 			tableBody.innerHTML = ""; // Clear existing data
 
-			data.forEach(passenger => {
-				let row = `<tr>
-                    <td>${passenger.username}</td>
-                    <td>${passenger.fullName}</td>
-                    <td>${passenger.age}</td>
-                    <td>${passenger.dob}</td>
-                    <td>${passenger.gender}</td>
-                    <td>${passenger.address}</td>
-                    <td>${passenger.contact}</td>
-                    <td>${passenger.idProof}</td>
-                    <td>
-                        <button class="edit-btn" onclick="editPassenger(${passenger.id})">✏️ Edit</button>
-                        <button class="delete-btn" onclick="deletePassenger(${passenger.id})">🗑️ Delete</button>
-                    </td>
-                </tr>`;
-				tableBody.innerHTML += row;
-			});
+			let lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+			let filteredData = searchTerm
+				? data.filter(passenger =>
+					passenger.username.toLowerCase().includes(lowerCaseSearchTerm) ||
+					passenger.fullName.toLowerCase().includes(lowerCaseSearchTerm)
+				)
+				: data;
+
+			if (filteredData.length === 0) {
+				tableBody.innerHTML = "<tr><td colspan='9' style='text-align:center;'>No matching passengers found</td></tr>";
+			} else {
+				filteredData.forEach(passenger => {
+					let row = `<tr>
+                        <td>${passenger.username}</td>
+                        <td>${passenger.fullName}</td>
+                        <td>${passenger.age}</td>
+                        <td>${passenger.dob}</td>
+                        <td>${passenger.gender}</td>
+                        <td>${passenger.address}</td>
+                        <td>${passenger.contact}</td>
+                        <td>${passenger.idProof}</td>
+                        <td>
+                            <button class="edit-btn" onclick="editPassenger(${passenger.id})">✏️ Edit</button>
+                            <button class="delete-btn" onclick="deletePassenger(${passenger.id})">🗑️ Delete</button>
+                        </td>
+                    </tr>`;
+					tableBody.innerHTML += row;
+				});
+			}
 		})
 		.catch(error => console.error("Error fetching passengers:", error));
+}
+
+// Attach event listeners for search AFTER passenger list is loaded
+function attachSearchListeners() {
+	let searchInput = document.querySelector("input[type='search']");
+	let searchButton = document.querySelector(".search-btn");
+
+	if (searchInput && searchButton) {
+		searchButton.addEventListener("click", function(event) {
+			event.preventDefault();
+			fetchPassengers(searchInput.value.trim());
+		});
+
+		searchInput.addEventListener("input", function() {
+			if (this.value.trim() === "") {
+				fetchPassengers(); // Reload all passengers if search is cleared
+			}
+		});
+	} else {
+		console.error("Search input or button not found. Ensure passenger list is loaded before searching.");
+	}
 }
 
 /*Handle Delete Passenger*/
