@@ -153,6 +153,84 @@
     font-size: 20px;
 }
 
+/* Main Search Container */
+.search-container {
+    display: flex;
+    gap: 20px;
+}
+
+/* Left Panel - Search Options */
+.search-panel {
+    width: 35%;
+    background: var(--light);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-panel h2 {
+    color: var(--dark);
+}
+
+.search-panel select,
+.search-panel input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--grey);
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn-search {
+    width: 100%;
+    background: var(--blue);
+    color: var(--light);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Right Panel - Train List */
+.train-list {
+    width: 65%;
+    background: var(--light);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.train-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.train-list th, .train-list td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--grey);
+}
+
+.train-list th {
+    background: var(--blue);
+    color: var(--light);
+}
+
+.train-list tr:hover {
+    background: var(--light-blue);
+}
+
+.select-btn {
+    background: var(--green);
+    color: var(--light);
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
 /* Ticket Bookings */
 .booking-container, .booking-list {
     background: var(--light);
@@ -217,6 +295,10 @@
 
 .booking-list tr:hover {
     background: var(--light-blue);
+}
+
+.booking-list {
+	margin-top: 12px;
 }
 
 .edit-btn, .delete-btn {

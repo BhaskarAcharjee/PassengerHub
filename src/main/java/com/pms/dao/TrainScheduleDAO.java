@@ -82,4 +82,81 @@ public class TrainScheduleDAO {
 
 		return prices;
 	}
+
+	// Get all unique origins
+	public static List<String> getAllOrigins() {
+		List<String> origins = new ArrayList<>();
+		try {
+			Connection conn = DriverManager.getConnection(DB_URL);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT origin FROM train_schedule");
+
+			while (rs.next()) {
+				origins.add(rs.getString("origin"));
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return origins;
+	}
+
+	// Get all unique destinations
+	public static List<String> getAllDestinations() {
+		List<String> destinations = new ArrayList<>();
+		try {
+			Connection conn = DriverManager.getConnection(DB_URL);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT destination FROM train_schedule");
+
+			while (rs.next()) {
+				destinations.add(rs.getString("destination"));
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return destinations;
+	}
+
+	// Get trains based on origin and destination
+	public static List<TrainSchedule> searchTrains(String origin, String destination) {
+		List<TrainSchedule> trainList = new ArrayList<>();
+		try {
+			Connection conn = DriverManager.getConnection(DB_URL);
+			PreparedStatement stmt = conn
+					.prepareStatement("SELECT * FROM train_schedule WHERE origin = ? AND destination = ?");
+			stmt.setString(1, origin);
+			stmt.setString(2, destination);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int trainNo = rs.getInt("train_no");
+				String trainName = rs.getString("train_name");
+				String departureTime = rs.getString("departure_time");
+				String arrivalTime = rs.getString("arrival_time");
+
+				// ✅ Fetch ticket prices for the train
+				Map<String, Double> ticketPrices = getTicketPricesForTrain(trainNo, conn);
+
+				TrainSchedule train = new TrainSchedule(trainNo, trainName, departureTime, arrivalTime,
+						origin + " → " + destination, ticketPrices);
+				trainList.add(train);
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return trainList;
+	}
+
 }

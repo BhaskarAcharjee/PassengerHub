@@ -1,104 +1,72 @@
 <div class="head-title">
-    <div class="left">
-        <h1>Ticket Bookings</h1>
-    </div>
+	<div class="left">
+		<h1>Ticket Bookings</h1>
+	</div>
 </div>
 
-<!-- Booking Form -->
-<div class="booking-container">
-    <h2>Book a Ticket</h2>
-    <form id="ticketForm">
-        <label for="passenger">Select Passenger</label>
-        <select id="passenger" required>
-            <option value="">Select Passenger</option>
-            <!-- Passenger list will be populated dynamically -->
-        </select>
+<div class="search-container">
+	<!-- Left Panel: Train Search -->
+	<div class="search-panel">
+		<h2>Search Train</h2>
 
-        <label for="train">Train Number</label>
-        <input type="text" id="train" placeholder="Enter Train Number" required>
+		<label for="origin">Origin</label> <select id="origin">
+			<option value="">Select Origin</option>
+			<!-- Dynamic origin list -->
+		</select> <label for="destination">Destination</label> <select id="destination">
+			<option value="">Select Destination</option>
+			<!-- Dynamic destination list -->
+		</select> <label for="trainClass">Class</label> <select id="trainClass">
+			<option value="">All Classes</option>
+			<option value="General">General</option>
+			<option value="Sleeper">Sleeper</option>
+			<option value="1st AC">1st AC</option>
+			<option value="2nd AC">2nd AC</option>
+		</select> <label for="travelDate">Travel Date</label> <input type="date"
+			id="travelDate">
 
-        <label for="date">Travel Date</label>
-        <input type="date" id="date" required>
+		<button class="btn-search" onclick="searchTrains()">Search
+			Train</button>
+	</div>
 
-        <label for="class">Class</label>
-        <select id="class" required>
-            <option value="Sleeper">Sleeper</option>
-            <option value="AC 3 Tier">AC 3 Tier</option>
-            <option value="AC 2 Tier">AC 2 Tier</option>
-            <option value="AC 1 Tier">AC 1 Tier</option>
-        </select>
-
-        <label for="seat">Seat Number</label>
-        <input type="number" id="seat" placeholder="Enter Seat Number" required>
-
-        <button type="submit" class="btn-book">Book Ticket</button>
-    </form>
+	<!-- Right Panel: Train List -->
+	<div class="train-list">
+		<h2>Available Trains</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Train Number</th>
+					<th>Train Name</th>
+					<th>Class</th>
+					<th>Price</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody id="trainTable">
+				<!-- Train list will be populated dynamically -->
+			</tbody>
+		</table>
+	</div>
 </div>
 
-<!-- Search & Filter -->
-<div class="search-filter-container">
-    <form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn">
-						<i class='bx bx-search'></i>
-					</button>
-				</div>
-			</form>
-    <select id="filter-status">
-        <option value="">All Status</option>
-        <option value="Confirmed">Confirmed</option>
-        <option value="Pending">Pending</option>
-        <option value="Cancelled">Cancelled</option>
-    </select>
-</div>
 
 <!-- Booking List -->
 <div class="booking-list">
-    <h2>All Ticket Bookings</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>PNR</th>
-                <th>Passenger Name</th>
-                <th>Train Number</th>
-                <th>Travel Date</th>
-                <th>Class</th>
-                <th>Seat</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="bookingTable">
-            <!-- Booking details will be added dynamically -->
-        </tbody>
-    </table>
-</div>
-
-<!-- Edit Modal -->
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>Edit Booking</h2>
-        <form id="editTicketForm">
-            <label for="editTrain">Train Number</label>
-            <input type="text" id="editTrain" required>
-
-            <label for="editDate">Travel Date</label>
-            <input type="date" id="editDate" required>
-
-            <label for="editClass">Class</label>
-            <select id="editClass" required>
-                <option value="Sleeper">Sleeper</option>
-                <option value="AC 3 Tier">AC 3 Tier</option>
-                <option value="AC 2 Tier">AC 2 Tier</option>
-                <option value="AC 1 Tier">AC 1 Tier</option>
-            </select>
-
-            <label for="editSeat">Seat Number</label>
-            <input type="number" id="editSeat" required>
-
-            <button type="submit" class="btn-update">Update Booking</button>
-        </form>
-    </div>
+	<h2>All Ticket Bookings</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>PNR</th>
+				<th>Passenger Name</th>
+				<th>Train Number</th>
+				<th>Travel Date</th>
+				<th>Class</th>
+				<th>Seat</th>
+				<th>Status</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody id="bookingTable">
+			<!-- Booking details will be added dynamically -->
+		</tbody>
+	</table>
 </div>

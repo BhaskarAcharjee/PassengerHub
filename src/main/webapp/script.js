@@ -1,3 +1,5 @@
+// ------------------------------- General -----------------------------------------
+
 // Dark Mode Switch
 const switchMode = document.getElementById('switch-mode');
 
@@ -8,6 +10,8 @@ switchMode.addEventListener('change', function() {
 		document.body.classList.remove('dark');
 	}
 })
+
+// ------------------------------- Sidebar -----------------------------------------
 
 // Sidebar Update dynamic fragment content
 document.addEventListener("DOMContentLoaded", function() {
@@ -31,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function() {
 					}
 					if (page === "train-schedule.html") {
 						fetchTrainSchedule();
+					}
+					if (page === "ticket-bookings.html") {
+						loadTrainData();
 					}
 				}, 100);
 			})
@@ -56,11 +63,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-// Dashboard Stats
-document.addEventListener("DOMContentLoaded", function() {
-	getDashboardStats()
-});
+// ------------------------------- Dashboard -----------------------------------------
 
+// Dashboard Stats
 function getDashboardStats() {
 	fetch('getDashboardStats')
 		.then(response => response.json())
@@ -77,6 +82,9 @@ function getDashboardStats() {
 		})
 		.catch(error => console.error("Error fetching dashboard stats:", error));
 }
+
+
+// ------------------------------- Passenger List -----------------------------------------
 
 // Open modal
 document.addEventListener("DOMContentLoaded", function() {
@@ -237,11 +245,9 @@ function handlePassengerFormSubmit(event) {
 }
 
 
-// Dynamically Fetch Train Schedule
-document.addEventListener("DOMContentLoaded", function() {
-	fetchTrainSchedule();
-});
+// ------------------------------- Train Schedule -----------------------------------------
 
+// Dynamically Fetch Train Schedule
 function fetchTrainSchedule() {
 	fetch("getTrainSchedule")
 		.then(response => response.json())
@@ -268,5 +274,87 @@ function fetchTrainSchedule() {
 		})
 		.catch(error => console.error("Error fetching train schedule:", error));
 }
+
+
+// ------------------------------- Ticket Booking -----------------------------------------
+
+// Fetch origins and destinations dynamically
+function loadTrainData() {
+	fetch("getTrainData")
+		.then(response => response.json())
+		.then(data => {
+			let originDropdown = document.getElementById("origin");
+			let destinationDropdown = document.getElementById("destination");
+
+			data.origins.forEach(origin => {
+				originDropdown.innerHTML += `<option value="${origin}">${origin}</option>`;
+			});
+
+			data.destinations.forEach(destination => {
+				destinationDropdown.innerHTML += `<option value="${destination}">${destination}</option>`;
+			});
+		})
+		.catch(error => console.error("Error loading train data:", error));
+}
+
+// Fetch available trains based on search criteria
+function searchTrains() {
+    let origin = document.getElementById("origin").value;
+    let destination = document.getElementById("destination").value;
+    let travelDate = document.getElementById("travelDate").value;
+    let selectedClass = document.getElementById("trainClass").value;
+
+    if (!origin || !destination) {
+        alert("⚠️ Please select both origin and destination.");
+        return;
+    }
+    if (!travelDate) {
+        alert("⚠️ Please select the travel date.");
+        return;
+    }
+
+    fetch(`searchTrain?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&trainClass=${encodeURIComponent(selectedClass)}`)
+        .then(response => response.json())
+        .then(data => {
+            let trainTable = document.getElementById("trainTable");
+            trainTable.innerHTML = "";
+
+            if (!data.trains || data.trains.length === 0) {
+                trainTable.innerHTML = `<tr><td colspan="5" style="text-align:center;">No direct trains available</td></tr>`;
+                return;
+            }
+
+            data.trains.forEach(train => {
+                let ticketPrices = train.ticketPrices;
+
+                if (typeof ticketPrices === "string") {
+                    trainTable.innerHTML += `
+                        <tr>
+                            <td>${train.trainNo}</td>
+                            <td>${train.trainName}</td>
+                            <td colspan="2" style="text-align:center;">No pricing available</td>
+                            <td><button class="btn-book" disabled>Unavailable</button></td>
+                        </tr>`;
+                } else {
+                    Object.entries(ticketPrices).forEach(([trainClass, price]) => {
+                        if (selectedClass === "" || trainClass === selectedClass) {  // ✅ Filter by class if selected
+                            trainTable.innerHTML += `
+                                <tr>
+                                    <td>${train.trainNo}</td>
+                                    <td>${train.trainName}</td>
+                                    <td>${trainClass}</td>
+                                    <td>$${price}</td>
+                                    <td><button class="btn-book" onclick="bookTrain(${train.trainNo}, '${trainClass}', ${price})">Book</button></td>
+                                </tr>`;
+                        }
+                    });
+                }
+            });
+        })
+        .catch(error => {
+            console.error("❌ Error fetching train schedule:", error);
+        });
+}
+
 
 
