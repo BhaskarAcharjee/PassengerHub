@@ -414,3 +414,106 @@
 #savePassengerBtn:hover {
     background-color: #0056b3;
 }
+
+
+/* My Profile */
+/* Profile Page Styles */
+.profile-container {
+    display: flex;
+    margin: 35px auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Left Side - Profile Overview */
+.profile-sidebar {
+    flex: 1;
+    background: #2c3e50;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.profile-pic-wrapper {
+    position: relative;
+    width: 120px;
+    margin: 0 auto 20px;
+}
+
+.profile-pic-wrapper img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+}
+
+.upload-btn {
+    display: block;
+    margin: 10px auto;
+    padding: 8px 12px;
+    background: #ecf0f1;
+    color: #333;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#imageUpload {
+    display: none;
+}
+
+/* Right Side - Profile Form */
+.profile-form {
+    flex: 2;
+    padding: 30px;
+    background: #f4f6f9;
+}
+
+.profile-form h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #333;
+}
+
+.profile-form label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.profile-form input,
+.profile-form select,
+.profile-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.profile-form textarea {
+    height: 80px;
+    resize: none;
+}
+
+.update-btn {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    background: #3498db;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.update-btn:hover {
+    background: #2980b9;
+}
+

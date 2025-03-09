@@ -358,3 +358,25 @@ function searchTrains() {
 
 
 
+// ------------------------------- My Profile -----------------------------------------
+
+// Function to preview selected image
+function previewImage(event) {
+    let reader = new FileReader();
+    reader.onload = function() {
+        let output = document.getElementById('profilePic');
+        output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+// Function to update profile details (Demo)
+function updateProfile() {
+    let fullName = document.getElementById('fullName').value;
+    let email = document.getElementById('email').value;
+    let phone = document.getElementById('phone').value;
+    let gender = document.getElementById('gender').value;
+    let address = document.getElementById('address').value;
+
+    alert(`✅ Profile Updated!\n\nName: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nGender: ${gender}\nAddress: ${address}`);
+}

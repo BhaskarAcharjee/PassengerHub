@@ -1,13 +1,42 @@
-<div class="head-title">
-    <div class="left">
-        <h1>My Profile</h1>
-        
+<div class="profile-container">
+    <!-- Left Panel: Profile Overview -->
+    <div class="profile-sidebar">
+        <div class="profile-pic-wrapper">
+            <img id="profilePic" src="https://placehold.co/150/png" alt="Profile Picture">
+            <input type="file" id="imageUpload" accept="image/*" onchange="previewImage(event)">
+            <label for="imageUpload" class="upload-btn">Change Photo</label>
+        </div>
+        <h2 id="displayName">Bhaskar Acharjee</h2>
+        <p id="displayEmail">bhaskar@example.com</p>
+        <p id="displayPhone">+91xxxxxxxxxx</p>
+    </div>
+
+    <!-- Right Panel: Profile Edit Form -->
+    <div class="profile-form">
+        <h2>Update Profile</h2>
+
+        <label>Full Name</label>
+        <input type="text" id="fullName" value="Bhaskar Acharjee">
+
+        <label>Email</label>
+        <input type="email" id="email" value="bhaskar@example.com">
+
+        <label>Phone Number</label>
+        <input type="tel" id="phone" value="+91xxxxxxxxxx">
+
+        <label>Gender</label>
+        <select id="gender">
+            <option value="Male" selected>Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label>Address</label>
+        <textarea id="address">1234 Elm Street, Springfield</textarea>
+
+        <button class="update-btn" onclick="updateProfile()">Update Profile</button>
     </div>
 </div>
 
-<div class="profile-container">
-    <img src="https://placehold.co/600x400/png" alt="Profile Picture">
-    <h2>John Doe</h2>
-    <p>Email: johndoe@example.com</p>
-    <p>Phone: +1234567890</p>
-</div>
+<link rel="stylesheet"
+	href="style1.css?v=<%=System.currentTimeMillis()%>">
