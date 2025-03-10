@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // Fetch passengers and apply search filter
-function fetchPassengers(searchTerm = "") {
+function fetchPassengers(searchTerm = "", filterGender = "", sortOption = "") {
 	fetch("getPassengers")
 		.then(response => response.json())
 		.then(data => {
@@ -139,13 +139,26 @@ function fetchPassengers(searchTerm = "") {
 			tableBody.innerHTML = ""; // Clear existing data
 
 			let lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
-			let filteredData = searchTerm
-				? data.filter(passenger =>
-					passenger.username.toLowerCase().includes(lowerCaseSearchTerm) ||
-					passenger.fullName.toLowerCase().includes(lowerCaseSearchTerm)
-				)
-				: data;
 
+			// **Filter by Search & Gender**
+			let filteredData = data.filter(passenger => {
+				let matchesSearch = passenger.username.toLowerCase().includes(lowerCaseSearchTerm) || passenger.fullName.toLowerCase().includes(lowerCaseSearchTerm);
+				let matchesGender = filterGender === "" || passenger.gender === filterGender;
+				return matchesSearch && matchesGender;
+			});
+
+			// **Sorting Logic**
+			if (sortOption === "nameAsc") {
+				filteredData.sort((a, b) => a.fullName.localeCompare(b.fullName));
+			} else if (sortOption === "nameDesc") {
+				filteredData.sort((a, b) => b.fullName.localeCompare(a.fullName));
+			} else if (sortOption === "ageAsc") {
+				filteredData.sort((a, b) => a.age - b.age);
+			} else if (sortOption === "ageDesc") {
+				filteredData.sort((a, b) => b.age - a.age);
+			}
+
+			// **Display Data**
 			if (filteredData.length === 0) {
 				tableBody.innerHTML = "<tr><td colspan='9' style='text-align:center;'>No matching passengers found</td></tr>";
 			} else {
@@ -171,10 +184,14 @@ function fetchPassengers(searchTerm = "") {
 		.catch(error => console.error("Error fetching passengers:", error));
 }
 
+
 // Attach event listeners for search AFTER passenger list is loaded
 function attachSearchListeners() {
 	let searchInput = document.querySelector("input[type='search']");
 	let searchButton = document.querySelector(".search-btn");
+	const filterGender = document.getElementById("filterGender");
+	const sortOptions = document.getElementById("sortOptions");
+	const passengerForm = document.getElementById("passengerForm");
 
 	if (searchInput && searchButton) {
 		searchButton.addEventListener("click", function(event) {
@@ -190,11 +207,36 @@ function attachSearchListeners() {
 	} else {
 		console.error("Search input or button not found. Ensure passenger list is loaded before searching.");
 	}
+
+	if (filterGender || sortOptions) {
+		// Apply gender filter
+		filterGender.addEventListener("change", function() {
+			fetchPassengers(searchInput.value.trim(), filterGender.value, sortOptions.value);
+		});
+
+		// Apply sorting
+		sortOptions.addEventListener("change", function() {
+			fetchPassengers(searchInput.value.trim(), filterGender.value, sortOptions.value);
+		});
+
+	} else {
+		console.error("Filter and sort option not found. Ensure passenger list is loaded before searching.");
+	}
+
+	if (passengerForm) {
+		passengerForm.addEventListener("submit", function(event) {
+			event.preventDefault(); // Prevent page reload
+			handlePassengerFormSubmit(event);
+		});
+	} else {
+		console.error("Passenger form not found. Ensure passenger list is loaded before searching.");
+	}
+
 }
 
 /*Handle Delete Passenger*/
 function deletePassenger(passengerId) {
-	if (!confirm("Are you sure you want to delete this lovely passenger?")) return;
+	if (!confirm("Are you sure you want to delete this loyal passenger?")) return;
 
 	fetch("deletePassenger", {
 		method: "POST",
@@ -213,32 +255,26 @@ function deletePassenger(passengerId) {
 		.catch(error => console.error("Error:", error));
 }
 
-
 // Function to handle the form submission
 function handlePassengerFormSubmit(event) {
-	event.preventDefault();
+	event.preventDefault(); // Prevent page reload
 
-	const formData = new FormData(this);
-
-	// Debugging: Log form values
-	for (let pair of formData.entries()) {
-		console.log(pair[0] + ": " + pair[1]);
-	}
+	const formData = new FormData(document.getElementById("passengerForm"));
 
 	fetch("addPassenger", {
 		method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: new URLSearchParams(new FormData(this)).toString() // Properly encode data
+		body: new URLSearchParams(formData).toString() // Encode form data correctly
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log("Response:", data);
 			if (data.status === "success") {
 				alert("Passenger added successfully!");
 				document.getElementById("passengerModal").style.display = "none";
-				fetchPassengers();
+				fetchPassengers(); // Refresh the passenger list
+				document.getElementById("passengerForm").reset(); // Clear form fields
 			} else {
-				alert("Error: " + data.message);
+				alert("Error: " + (data.message || "Unknown error"));
 			}
 		})
 		.catch(error => console.error("❌ Fetch Error:", error));
@@ -299,46 +335,46 @@ function loadTrainData() {
 
 // Fetch available trains based on search criteria
 function searchTrains() {
-    let origin = document.getElementById("origin").value;
-    let destination = document.getElementById("destination").value;
-    let travelDate = document.getElementById("travelDate").value;
-    let selectedClass = document.getElementById("trainClass").value;
+	let origin = document.getElementById("origin").value;
+	let destination = document.getElementById("destination").value;
+	let travelDate = document.getElementById("travelDate").value;
+	let selectedClass = document.getElementById("trainClass").value;
 
-    if (!origin || !destination) {
-        alert("⚠️ Please select both origin and destination.");
-        return;
-    }
-    if (!travelDate) {
-        alert("⚠️ Please select the travel date.");
-        return;
-    }
+	if (!origin || !destination) {
+		alert("⚠️ Please select both origin and destination.");
+		return;
+	}
+	if (!travelDate) {
+		alert("⚠️ Please select the travel date.");
+		return;
+	}
 
-    fetch(`searchTrain?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&trainClass=${encodeURIComponent(selectedClass)}`)
-        .then(response => response.json())
-        .then(data => {
-            let trainTable = document.getElementById("trainTable");
-            trainTable.innerHTML = "";
+	fetch(`searchTrain?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&trainClass=${encodeURIComponent(selectedClass)}`)
+		.then(response => response.json())
+		.then(data => {
+			let trainTable = document.getElementById("trainTable");
+			trainTable.innerHTML = "";
 
-            if (!data.trains || data.trains.length === 0) {
-                trainTable.innerHTML = `<tr><td colspan="5" style="text-align:center;">No direct trains available</td></tr>`;
-                return;
-            }
+			if (!data.trains || data.trains.length === 0) {
+				trainTable.innerHTML = `<tr><td colspan="5" style="text-align:center;">No direct trains available</td></tr>`;
+				return;
+			}
 
-            data.trains.forEach(train => {
-                let ticketPrices = train.ticketPrices;
+			data.trains.forEach(train => {
+				let ticketPrices = train.ticketPrices;
 
-                if (typeof ticketPrices === "string") {
-                    trainTable.innerHTML += `
+				if (typeof ticketPrices === "string") {
+					trainTable.innerHTML += `
                         <tr>
                             <td>${train.trainNo}</td>
                             <td>${train.trainName}</td>
                             <td colspan="2" style="text-align:center;">No pricing available</td>
                             <td><button class="btn-book" disabled>Unavailable</button></td>
                         </tr>`;
-                } else {
-                    Object.entries(ticketPrices).forEach(([trainClass, price]) => {
-                        if (selectedClass === "" || trainClass === selectedClass) {  // ✅ Filter by class if selected
-                            trainTable.innerHTML += `
+				} else {
+					Object.entries(ticketPrices).forEach(([trainClass, price]) => {
+						if (selectedClass === "" || trainClass === selectedClass) {  // ✅ Filter by class if selected
+							trainTable.innerHTML += `
                                 <tr>
                                     <td>${train.trainNo}</td>
                                     <td>${train.trainName}</td>
@@ -346,14 +382,14 @@ function searchTrains() {
                                     <td>$${price}</td>
                                     <td><button class="btn-book" onclick="bookTrain(${train.trainNo}, '${trainClass}', ${price})">Book</button></td>
                                 </tr>`;
-                        }
-                    });
-                }
-            });
-        })
-        .catch(error => {
-            console.error("❌ Error fetching train schedule:", error);
-        });
+						}
+					});
+				}
+			});
+		})
+		.catch(error => {
+			console.error("❌ Error fetching train schedule:", error);
+		});
 }
 
 
@@ -362,21 +398,21 @@ function searchTrains() {
 
 // Function to preview selected image
 function previewImage(event) {
-    let reader = new FileReader();
-    reader.onload = function() {
-        let output = document.getElementById('profilePic');
-        output.src = reader.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
+	let reader = new FileReader();
+	reader.onload = function() {
+		let output = document.getElementById('profilePic');
+		output.src = reader.result;
+	};
+	reader.readAsDataURL(event.target.files[0]);
 }
 
 // Function to update profile details (Demo)
 function updateProfile() {
-    let fullName = document.getElementById('fullName').value;
-    let email = document.getElementById('email').value;
-    let phone = document.getElementById('phone').value;
-    let gender = document.getElementById('gender').value;
-    let address = document.getElementById('address').value;
+	let fullName = document.getElementById('fullName').value;
+	let email = document.getElementById('email').value;
+	let phone = document.getElementById('phone').value;
+	let gender = document.getElementById('gender').value;
+	let address = document.getElementById('address').value;
 
-    alert(`✅ Profile Updated!\n\nName: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nGender: ${gender}\nAddress: ${address}`);
+	alert(`✅ Profile Updated!\n\nName: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nGender: ${gender}\nAddress: ${address}`);
 }

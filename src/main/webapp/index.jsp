@@ -81,7 +81,7 @@
 	</section>
 	<!-- CONTENT -->
 
-	<script src="script.js?v=<%=System.currentTimeMillis()%>"></script>
+	<script src="script.js"></script>
 
 </body>
 </html>
