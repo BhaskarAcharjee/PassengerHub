@@ -1,166 +1,163 @@
 /* Train Schedule  */
-
 .train-schedule {
-    margin-top: 20px;
-    overflow-x: auto;
+	margin-top: 20px;
+	overflow-x: auto;
 }
 
 .train-schedule table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	border-collapse: collapse;
+	background: #fff;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .train-schedule th, .train-schedule td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+	padding: 15px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
 }
 
 .train-schedule th {
-    background: #2c3e50;
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
+	background: #2c3e50;
+	color: white;
+	text-transform: uppercase;
+	font-size: 14px;
 }
 
 .train-schedule tbody tr:hover {
-    background: #f5f5f5;
-    transition: 0.3s;
+	background: #f5f5f5;
+	transition: 0.3s;
 }
 
 .status {
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-weight: bold;
-    display: inline-block;
+	padding: 5px 12px;
+	border-radius: 15px;
+	font-weight: bold;
+	display: inline-block;
 }
 
 .status.on-time {
-    background: #2ecc71;
-    color: white;
+	background: #2ecc71;
+	color: white;
 }
 
 .status.delayed {
-    background: #e67e22;
-    color: white;
+	background: #e67e22;
+	color: white;
 }
 
 .status.arriving {
-    background: #f1c40f;
-    color: black;
+	background: #f1c40f;
+	color: black;
 }
 
 .status.cancelled {
-    background: #e74c3c;
-    color: white;
+	background: #e74c3c;
+	color: white;
 }
-
 
 /* Passenger List */
 .search-filter-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+	display: flex;
+	gap: 10px;
+	margin-bottom: 20px;
 }
 
-.search-filter-container select, 
-.search-filter-container button {
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.search-filter-container select, .search-filter-container button {
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 }
 
 .search-filter-container button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    cursor: pointer;
+	background-color: #3498db;
+	color: white;
+	border: none;
+	cursor: pointer;
 }
 
 .passenger-list table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	border-collapse: collapse;
+	background: #fff;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .passenger-list th, .passenger-list td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+	padding: 15px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
 }
 
 .passenger-list th {
-    background: #2c3e50;
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
+	background: #2c3e50;
+	color: white;
+	text-transform: uppercase;
+	font-size: 14px;
 }
 
 .passenger-list tbody tr:hover {
-    background: #f5f5f5;
-    transition: 0.3s;
+	background: #f5f5f5;
+	transition: 0.3s;
 }
 
 .edit-btn, .delete-btn {
-    padding: 5px 10px;
-    font-size: 12px;
-    border-radius: 5px;
-    cursor: pointer;
+	padding: 5px 10px;
+	font-size: 12px;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 .edit-btn {
-    background: #f39c12;
-    color: white;
-    border: none;
+	background: #f39c12;
+	color: white;
+	border: none;
 }
 
 .delete-btn {
-    background: #e74c3c;
-    color: white;
-    border: none;
+	background: #e74c3c;
+	color: white;
+	border: none;
 }
 
 .modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    width: 400px;
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+	width: 400px;
 }
 
 .modal-content {
-    position: relative;
+	position: relative;
 }
 
 .close-btn {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    cursor: pointer;
-    font-size: 20px;
+	position: absolute;
+	right: 15px;
+	top: 10px;
+	cursor: pointer;
+	font-size: 20px;
 }
 
 /* Main Search Container */
 .search-container {
-    display: flex;
-    gap: 20px;
+	display: flex;
+	gap: 20px;
 }
 
 /* Left Panel - Search Options */
-.search-panel {
+/* .search-panel {
     width: 35%;
     background: var(--light);
     padding: 20px;
@@ -170,131 +167,151 @@
 
 .search-panel h2 {
     color: var(--dark);
+} */
+.train-panel select, .train-panel input {
+	width: 100%;
+	padding: 8px;
+	margin-bottom: 10px;
+	border: 1px solid var(--grey);
+	border-radius: 5px;
+	font-size: 16px;
 }
 
-.search-panel select,
-.search-panel input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid var(--grey);
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.btn-search {
-    width: 100%;
-    background: var(--blue);
-    color: var(--light);
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.btn-search, .btn-add-passenger, #confirmBookingBtn {
+	width: 100%;
+	background: var(--blue);
+	color: var(--light);
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 /* Right Panel - Train List */
-.train-list {
+/* .train-list {
     width: 65%;
     background: var(--light);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
+} */
 .train-list table {
-    width: 100%;
-    border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 }
 
 .train-list th, .train-list td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid var(--grey);
+	padding: 10px;
+	text-align: left;
+	border-bottom: 1px solid var(--grey);
 }
 
 .train-list th {
-    background: var(--blue);
-    color: var(--light);
+	background: var(--blue);
+	color: var(--light);
 }
 
 .train-list tr:hover {
-    background: var(--light-blue);
+	background: var(--light-blue);
 }
 
 .select-btn {
-    background: var(--green);
-    color: var(--light);
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+	background: var(--green);
+	color: var(--light);
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
-
 /* Ticket Bookings */
+.booking-container {
+	display: flex;
+	gap: 20px;
+	justify-content: space-between;
+}
+
+/* Left Panel */
+.left-panel {
+	width: 40%;
+	background: var(--light);
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Right Panel */
+.right-panel {
+	width: 55%;
+	background: var(--light);
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 .booking-container, .booking-list {
-    background: var(--light);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+	background: var(--light);
+	padding: 20px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .booking-container h2, .booking-list h2 {
-    color: var(--dark);
+	color: var(--dark);
 }
 
 .booking-container form {
-    display: grid;
-    gap: 10px;
+	display: grid;
+	gap: 10px;
 }
 
 .booking-container input, .booking-container select {
-    padding: 8px;
-    border: 1px solid var(--grey);
-    border-radius: 5px;
-    font-size: 16px;
+	padding: 8px;
+	border: 1px solid var(--grey);
+	border-radius: 5px;
+	font-size: 16px;
 }
 
 .btn-book {
-    background: var(--blue);
-    color: var(--light);
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+	background: var(--blue);
+	color: var(--light);
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 .search-filter-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+	display: flex;
+	gap: 10px;
+	margin-bottom: 20px;
 }
 
 .search-filter-container select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid var(--grey);
+	padding: 8px;
+	border-radius: 5px;
+	border: 1px solid var(--grey);
 }
 
 .booking-list table {
-    width: 100%;
-    border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 }
 
 .booking-list th, .booking-list td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid var(--grey);
+	padding: 10px;
+	text-align: left;
+	border-bottom: 1px solid var(--grey);
 }
 
 .booking-list th {
-    background: var(--blue);
-    color: var(--light);
+	background: var(--blue);
+	color: var(--light);
 }
 
 .booking-list tr:hover {
-    background: var(--light-blue);
+	background: var(--light-blue);
 }
 
 .booking-list {
@@ -302,218 +319,263 @@
 }
 
 .edit-btn, .delete-btn {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 .edit-btn {
-    background: var(--yellow);
-    color: var(--dark);
+	background: var(--yellow);
+	color: var(--dark);
 }
 
 .delete-btn {
-    background: var(--red);
-    color: var(--light);
+	background: var(--red);
+	color: var(--light);
 }
 
 .close-btn {
-    font-size: 20px;
-    cursor: pointer;
-    color: var(--dark);
-    align-self: flex-end;
+	font-size: 20px;
+	cursor: pointer;
+	color: var(--dark);
+	align-self: flex-end;
 }
 
 /* Modal */
 .modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--light);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 500px;
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: var(--light);
+	padding: 25px;
+	border-radius: 12px;
+	box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+	width: 90%;
+	max-width: 500px;
 }
 
 /* Modal Content */
 .modal-content {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 /* Form Layout */
 .modal-content form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    align-items: center;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 12px;
+	align-items: center;
 }
 
 /* Make Full-Width Fields */
 .full-width {
-    grid-column: span 2;
+	grid-column: span 2;
 }
 
 /* Labels */
 .modal-content label {
-    font-weight: 600;
-    color: #444;
+	font-weight: 600;
+	color: #444;
 }
 
 /* Inputs & Select */
-.modal-content input, 
-.modal-content select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s;
+.modal-content input, .modal-content select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	font-size: 16px;
+	transition: border-color 0.3s;
 }
 
-.modal-content input:focus, 
-.modal-content select:focus {
-    border-color: #007bff;
-    outline: none;
+.modal-content input:focus, .modal-content select:focus {
+	border-color: #007bff;
+	outline: none;
 }
 
 /* Close Button */
 .close-btn {
-    position: absolute;
-    top: 12px;
-    right: 15px;
-    font-size: 22px;
-    color: #333;
-    cursor: pointer;
-    transition: color 0.2s;
+	position: absolute;
+	top: 12px;
+	right: 15px;
+	font-size: 22px;
+	color: #333;
+	cursor: pointer;
+	transition: color 0.2s;
 }
 
 .close-btn:hover {
-    color: #d32f2f;
+	color: #d32f2f;
 }
 
 /* Save Button */
 #savePassengerBtn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-weight: bold;
-    grid-column: span 2;
+	background-color: #007bff;
+	color: #fff;
+	padding: 12px;
+	border: none;
+	border-radius: 6px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background 0.3s;
+	font-weight: bold;
+	grid-column: span 2;
 }
 
 #savePassengerBtn:hover {
-    background-color: #0056b3;
+	background-color: #0056b3;
 }
-
 
 /* My Profile */
 /* Profile Page Styles */
 .profile-container {
-    display: flex;
-    margin: 35px auto;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+	display: flex;
+	margin: 35px auto;
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
 }
 
 /* Left Side - Profile Overview */
 .profile-sidebar {
-    flex: 1;
-    background: #2c3e50;
-    color: white;
-    padding: 30px;
-    text-align: center;
+	flex: 1;
+	background: #2c3e50;
+	color: white;
+	padding: 30px;
+	text-align: center;
 }
 
 .profile-pic-wrapper {
-    position: relative;
-    width: 120px;
-    margin: 0 auto 20px;
+	position: relative;
+	width: 120px;
+	margin: 0 auto 20px;
 }
 
 .profile-pic-wrapper img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid white;
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 3px solid white;
 }
 
 .upload-btn {
-    display: block;
-    margin: 10px auto;
-    padding: 8px 12px;
-    background: #ecf0f1;
-    color: #333;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
+	display: block;
+	margin: 10px auto;
+	padding: 8px 12px;
+	background: #ecf0f1;
+	color: #333;
+	font-size: 14px;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 #imageUpload {
-    display: none;
+	display: none;
 }
 
 /* Right Side - Profile Form */
 .profile-form {
-    flex: 2;
-    padding: 30px;
-    background: #f4f6f9;
+	flex: 2;
+	padding: 30px;
+	background: #f4f6f9;
 }
 
 .profile-form h2 {
-    margin-bottom: 15px;
-    font-size: 22px;
-    color: #333;
+	margin-bottom: 15px;
+	font-size: 22px;
+	color: #333;
 }
 
 .profile-form label {
-    display: block;
-    font-weight: bold;
-    margin-top: 10px;
+	display: block;
+	font-weight: bold;
+	margin-top: 10px;
 }
 
-.profile-form input,
-.profile-form select,
-.profile-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+.profile-form input, .profile-form select, .profile-form textarea {
+	width: 100%;
+	padding: 10px;
+	margin-top: 5px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	font-size: 16px;
 }
 
 .profile-form textarea {
-    height: 80px;
-    resize: none;
+	height: 80px;
+	resize: none;
 }
 
 .update-btn {
-    display: block;
-    width: 100%;
-    margin-top: 15px;
-    background: #3498db;
-    color: white;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+	display: block;
+	width: 100%;
+	margin-top: 15px;
+	background: #3498db;
+	color: white;
+	padding: 12px;
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 .update-btn:hover {
-    background: #2980b9;
+	background: #2980b9;
 }
 
+/* --------------- Train Ticket ----------------------- */
+.ticket-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.ticket {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    background: #fe6500;
+    height: 250px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    animation: slide-in 1s forwards;
+    animation-delay: 1s;
+    animation-timing-function: ease-in;
+    margin: auto;
+}
+
+.ticket-body {
+    width: 100%;
+    padding: 16px;
+    height: 165px;
+    background: #FED;
+    display: grid;
+    align-content: stretch;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.grid > .heading {
+    font-size: 0.8rem;
+}
+
+.grid > .content {
+    font-size: 0.7rem;
+    padding-right: 1rem;
+}

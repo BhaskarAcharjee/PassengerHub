@@ -4,52 +4,96 @@
 	</div>
 </div>
 
-<div class="search-container">
-	<!-- Left Panel: Train Search -->
-	<div class="search-panel">
-		<h2>Search Train</h2>
+<!-- Main Container for Two Panels -->
+<div class="booking-container">
+	<!-- Left Panel -->
+	<div class="left-panel">
+		<!-- Search Train Section (Initially Visible) -->
+		<div id="searchTrainSection" class="train-panel">
+			<h2>Search Train</h2>
+			<label for="origin">Origin</label> <select id="origin">
+				<option value="">Select Origin</option>
+			</select> <label for="destination">Destination</label> <select
+				id="destination">
+				<option value="">Select Destination</option>
+			</select> <label for="trainClass">Class</label> <select id="trainClass">
+				<option value="">All Classes</option>
+				<option value="General">General</option>
+				<option value="Sleeper">Sleeper</option>
+				<option value="1st AC">1st AC</option>
+				<option value="2nd AC">2nd AC</option>
+			</select> <label for="travelDate">Travel Date</label> <input type="date"
+				id="travelDate">
 
-		<label for="origin">Origin</label> <select id="origin">
-			<option value="">Select Origin</option>
-			<!-- Dynamic origin list -->
-		</select> <label for="destination">Destination</label> <select id="destination">
-			<option value="">Select Destination</option>
-			<!-- Dynamic destination list -->
-		</select> <label for="trainClass">Class</label> <select id="trainClass">
-			<option value="">All Classes</option>
-			<option value="General">General</option>
-			<option value="Sleeper">Sleeper</option>
-			<option value="1st AC">1st AC</option>
-			<option value="2nd AC">2nd AC</option>
-		</select> <label for="travelDate">Travel Date</label> <input type="date"
-			id="travelDate">
+			<button class="btn-search" onclick="searchTrains()">Search
+				Train</button>
+		</div>
 
-		<button class="btn-search" onclick="searchTrains()">Search
-			Train</button>
+		<!-- Select Passenger Section (Initially Hidden) -->
+		<div id="selectPassengerSection" class="train-panel" style="display: none;">
+			<h2>Select Passengers</h2>
+			<input type="text" id="passengerSearch"
+				placeholder="Search by Username or Full Name">
+			<div id="passengerResults"></div>
+
+			<label for="seatPreference">Seat Preference</label> <select
+				id="seatPreference">
+				<option value="">No Preference</option>
+				<option value="Window">Window</option>
+				<option value="Aisle">Aisle</option>
+				<option value="Middle">Middle</option>
+			</select> <label for="foodPreference">Food Preference</label> <select
+				id="foodPreference">
+				<option value="">No Preference</option>
+				<option value="Veg">Veg</option>
+				<option value="Non-Veg">Non-Veg</option>
+			</select>
+
+			<button class="btn-add-passenger" onclick="addPassenger()">Add
+				Passenger</button>
+		</div>
 	</div>
 
-	<!-- Right Panel: Train List -->
-	<div class="train-list">
-		<h2>Available Trains</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Train Number</th>
-					<th>Train Name</th>
-					<th>Class</th>
-					<th>Price</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody id="trainTable">
-				<!-- Train list will be populated dynamically -->
-			</tbody>
-		</table>
+	<!-- Right Panel -->
+	<div class="right-panel">
+		<!-- Available Trains Section (Initially Visible) -->
+		<div id="availableTrainsSection" class="train-list">
+			<h2>Available Trains</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Train Number</th>
+						<th>Train Name</th>
+						<th>Class</th>
+						<th>Price</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody id="trainTable"></tbody>
+			</table>
+		</div>
+
+		<!-- Selected Train & Passenger List (Initially Hidden) -->
+		<div id="bookingDetailsSection" style="display: none;">
+			<!-- Selected Train -->
+			<div id="selectedTrainSection">
+				<h2>Selected Train & Class</h2>
+				<p id="selectedTrainDetails"></p>
+			</div>
+
+			<!-- Added Passengers -->
+			<div id="passengerListSection">
+				<h2>Added Passengers</h2>
+				<ul id="passengerList"></ul>
+			</div>
+
+			<button id="confirmBookingBtn" onclick="confirmBooking()">Confirm
+				Booking</button>
+		</div>
 	</div>
 </div>
 
-
-<!-- Booking List -->
+<!-- All Ticket Bookings -->
 <div class="booking-list">
 	<h2>All Ticket Bookings</h2>
 	<table>
@@ -62,11 +106,8 @@
 				<th>Class</th>
 				<th>Seat</th>
 				<th>Status</th>
-				<th>Actions</th>
 			</tr>
 		</thead>
-		<tbody id="bookingTable">
-			<!-- Booking details will be added dynamically -->
-		</tbody>
+		<tbody id="bookingTable"></tbody>
 	</table>
 </div>

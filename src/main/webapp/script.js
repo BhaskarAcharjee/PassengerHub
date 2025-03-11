@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					if (page === "ticket-bookings.html") {
 						loadTrainData();
 					}
-				}, 100);
+				}, 200);
 			})
 			.catch(error => console.error("Error loading content:", error));
 	}
@@ -314,6 +314,9 @@ function fetchTrainSchedule() {
 
 // ------------------------------- Ticket Booking -----------------------------------------
 
+let selectedTrain = null;
+let selectedPassengers = [];
+
 // Fetch origins and destinations dynamically
 function loadTrainData() {
 	fetch("getTrainData")
@@ -340,56 +343,163 @@ function searchTrains() {
 	let travelDate = document.getElementById("travelDate").value;
 	let selectedClass = document.getElementById("trainClass").value;
 
-	if (!origin || !destination) {
-		alert("⚠️ Please select both origin and destination.");
-		return;
-	}
-	if (!travelDate) {
-		alert("⚠️ Please select the travel date.");
+	if (!origin || !destination || !travelDate) {
+		alert("Please select origin, destination, and travel date.");
 		return;
 	}
 
-	fetch(`searchTrain?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&trainClass=${encodeURIComponent(selectedClass)}`)
+	fetch(`searchTrain?origin=${origin}&destination=${destination}&trainClass=${selectedClass}`)
 		.then(response => response.json())
 		.then(data => {
 			let trainTable = document.getElementById("trainTable");
 			trainTable.innerHTML = "";
 
-			if (!data.trains || data.trains.length === 0) {
-				trainTable.innerHTML = `<tr><td colspan="5" style="text-align:center;">No direct trains available</td></tr>`;
-				return;
-			}
-
 			data.trains.forEach(train => {
-				let ticketPrices = train.ticketPrices;
-
-				if (typeof ticketPrices === "string") {
-					trainTable.innerHTML += `
-                        <tr>
-                            <td>${train.trainNo}</td>
-                            <td>${train.trainName}</td>
-                            <td colspan="2" style="text-align:center;">No pricing available</td>
-                            <td><button class="btn-book" disabled>Unavailable</button></td>
-                        </tr>`;
-				} else {
-					Object.entries(ticketPrices).forEach(([trainClass, price]) => {
-						if (selectedClass === "" || trainClass === selectedClass) {  // ✅ Filter by class if selected
-							trainTable.innerHTML += `
-                                <tr>
-                                    <td>${train.trainNo}</td>
-                                    <td>${train.trainName}</td>
-                                    <td>${trainClass}</td>
-                                    <td>$${price}</td>
-                                    <td><button class="btn-book" onclick="bookTrain(${train.trainNo}, '${trainClass}', ${price})">Book</button></td>
-                                </tr>`;
-						}
-					});
-				}
+				Object.entries(train.ticketPrices).forEach(([trainClass, price]) => {
+					if (!selectedClass || trainClass === selectedClass) {
+						trainTable.innerHTML += `
+                            <tr>
+                                <td>${train.trainNo}</td>
+                                <td>${train.trainName}</td>
+                                <td>${trainClass}</td>
+                                <td>$${price}</td>
+                                <td><button class="btn-book" onclick="selectTrain(${train.trainNo}, '${train.trainName}', '${trainClass}', ${price})">Book</button></td>
+                            </tr>`;
+					}
+				});
 			});
-		})
-		.catch(error => {
-			console.error("❌ Error fetching train schedule:", error);
 		});
+}
+
+
+function selectTrain(trainNo, trainName, trainClass, price) {
+	resetTicketBookingUI();
+
+	selectedTrain = { trainNo, trainName, trainClass, price };
+
+	let searchTrainSection = document.getElementById("searchTrainSection");
+	let selectPassengerSection = document.getElementById("selectPassengerSection");
+	let availableTrainsSection = document.getElementById("availableTrainsSection");
+	let bookingDetailsSection = document.getElementById("bookingDetailsSection");
+	let selectedTrainSection = document.getElementById("selectedTrainSection");
+	let selectedTrainDetails = document.getElementById("selectedTrainDetails");
+
+	if (!selectedTrainDetails || !selectedTrainSection || !bookingDetailsSection) {
+		console.error("❌ Train selection UI not found. Make sure the elements exist in the HTML.");
+		return;
+	}
+
+	// Hide search and available trains
+	searchTrainSection.style.display = "none";
+	availableTrainsSection.style.display = "none";
+
+	// Show booking details and selected train
+	bookingDetailsSection.style.display = "block";
+	selectedTrainSection.style.display = "block";  // 🔹 Ensure this is displayed
+
+	// Show passenger section
+	selectPassengerSection.style.display = "block";
+
+	// Update the selected train details
+	selectedTrainDetails.innerText = `Train: ${trainName} (${trainNo}) | Class: ${trainClass} | Price: $${price}`;
+}
+
+
+
+
+// Reset Ticket Booking UI When Loading the Page
+function resetTicketBookingUI() {
+	selectedTrain = null;
+	selectedPassengers = [];
+
+	let passengerListSection = document.getElementById("passengerListSection");
+	let confirmBookingBtn = document.getElementById("confirmBookingBtn");
+
+	if (passengerListSection) passengerListSection.style.display = "none";
+	if (confirmBookingBtn) confirmBookingBtn.style.display = "none";
+}
+
+
+function addPassenger() {
+	if (selectedPassengers.length >= 3) {
+		alert("You can only add up to 3 passengers.");
+		return;
+	}
+
+	let searchValue = document.getElementById("passengerSearch").value;
+	let seatPreference = document.getElementById("seatPreference").value;
+	let foodPreference = document.getElementById("foodPreference").value;
+
+	if (!searchValue) {
+		alert("Please select a passenger.");
+		return;
+	}
+
+	selectedPassengers.push({ searchValue, seatPreference, foodPreference });
+	let passengerList = document.getElementById("passengerList");
+	passengerList.innerHTML += `<li>${searchValue} - Seat: ${seatPreference}, Food: ${foodPreference}</li>`;
+
+	document.getElementById("passengerListSection").style.display = "block";
+	document.getElementById("confirmBookingBtn").style.display = "block";
+}
+
+function confirmBooking() {
+	// Create the ticket UI dynamically
+	let ticketHTML = `
+    <div class="ticket-container">
+        <div class="ticket">
+            <div class="ticket-body">
+                <div class="grid 5">
+                    <div class="heading">Class</div>
+                    <div class="heading">Ticket Type</div>
+                    <div class="heading">Adult</div>
+                    <div class="heading">Child</div>
+                    <div class="heading"></div>
+                    <div class="content">${selectedTrain.trainClass}</div>
+                    <div class="content">Advance</div>
+                    <div class="content">${selectedPassengers.length}</div>
+                    <div class="content">${selectedPassengers.length === 1 ? 'NIL' : selectedPassengers.length - 1}</div>
+                    <div class="content">PMS</div>
+                </div>
+                <div class="grid 5">
+                    <div class="heading">From</div>
+                    <div class="heading"></div>
+                    <div class="heading">Valid Until</div>
+                    <div class="heading"></div>
+                    <div class="heading">Price</div>
+                    <div class="content">${selectedTrain.trainNo}</div>
+                    <div class="content"></div>
+                    <div class="content">${new Date().toDateString()}</div>
+                    <div class="content"></div>
+                    <div class="content">$${selectedTrain.price}</div>
+                </div>
+                <div class="grid 5">
+                    <div class="heading">To</div>
+                    <div class="heading">Route</div>
+                    <div class="heading"></div>
+                    <div class="heading"></div>
+                    <div class="heading"></div>
+                    <div class="content">Destination</div>
+                    <div class="content">ANY</div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+
+	// Replace the left panel with the ticket UI
+	let leftPanel = document.querySelector(".left-panel");
+	if (leftPanel) {
+		leftPanel.outerHTML = ticketHTML; // Completely replace it
+	}
+
+	let confirmBookingBtn = document.getElementById("confirmBookingBtn");
+	if (confirmBookingBtn) confirmBookingBtn.style.display = "none";
+
+	/*    // Hide the right panel after booking
+		let rightPanel = document.querySelector(".right-panel");
+		if (rightPanel) {
+			rightPanel.style.display = "none";
+		}*/
 }
 
 
