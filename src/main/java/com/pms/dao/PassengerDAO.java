@@ -67,26 +67,49 @@ public class PassengerDAO {
 			return false;
 		}
 	}
-	
-	// Train Count
-		public static int getPassengerCount() {
-		    int count = 0;
-		    try {
-		        Class.forName("org.sqlite.JDBC");
-		        Connection conn = DriverManager.getConnection(DB_URL);
-		        Statement stmt = conn.createStatement();
-		        ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM passengers");
 
-		        if (rs.next()) {
-		            count = rs.getInt("total");
-		        }
+	// Passenger Count
+	public static int getPassengerCount() {
+		int count = 0;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection(DB_URL);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM passengers");
 
-		        rs.close();
-		        stmt.close();
-		        conn.close();
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		    return count;
+			if (rs.next()) {
+				count = rs.getInt("total");
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return count;
+	}
+
+	// Search passengers dynamically
+	public static List<Passenger> searchPassengers(String keyword) {
+		List<Passenger> passengers = new ArrayList<>();
+		String query = "SELECT * FROM passengers WHERE username LIKE ? OR fullName LIKE ?";
+
+		try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
+
+			stmt.setString(1, "%" + keyword + "%");
+			stmt.setString(2, "%" + keyword + "%");
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Passenger passenger = new Passenger(rs.getInt("id"), rs.getString("username"), rs.getString("fullName"),
+						rs.getInt("age"), rs.getString("dob"), rs.getString("gender"), rs.getString("address"),
+						rs.getString("contact"), rs.getString("idProof"));
+				passengers.add(passenger);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return passengers;
+	}
 }

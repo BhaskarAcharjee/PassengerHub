@@ -106,6 +106,27 @@
 	transition: 0.3s;
 }
 
+.suggestions-container {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.passenger-item {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.passenger-item:hover {
+    background-color: #f0f0f0;
+}
+
+
 .edit-btn, .delete-btn {
 	padding: 5px 10px;
 	font-size: 12px;

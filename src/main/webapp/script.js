@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					}
 					if (page === "ticket-bookings.html") {
 						loadTrainData();
+						attachPassengerSearchListener();
 					}
 				}, 200);
 			})
@@ -500,6 +501,49 @@ function confirmBooking() {
 		if (rightPanel) {
 			rightPanel.style.display = "none";
 		}*/
+}
+
+// Function to Attach Search Listener After the Ticket Bookings Page Loads
+function attachPassengerSearchListener() {
+    let passengerSearch = document.getElementById("passengerSearch");
+    let resultsContainer = document.getElementById("passengerResults");
+
+    if (!passengerSearch || !resultsContainer) {
+        console.error("❌ Passenger search elements not found. Skipping listener attachment.");
+        return;
+    }
+
+    passengerSearch.addEventListener("input", function () {
+        let searchQuery = this.value.trim();
+
+        if (searchQuery.length < 1) {
+            resultsContainer.innerHTML = ""; // Clear results if no input
+            return;
+        }
+
+        fetch(`searchPassenger?query=${searchQuery}`)
+            .then(response => response.json())
+            .then(data => {
+                resultsContainer.innerHTML = ""; // Clear old suggestions
+
+                if (data.length === 0) {
+                    resultsContainer.innerHTML = "<p>No matching passengers found.</p>";
+                    return;
+                }
+
+                data.forEach(passenger => {
+                    let div = document.createElement("div");
+                    div.classList.add("passenger-item");
+                    div.textContent = `${passenger.fullName} (${passenger.username})`;
+                    div.onclick = function () {
+                        passengerSearch.value = passenger.fullName;
+                        resultsContainer.innerHTML = ""; // Hide suggestions after selection
+                    };
+                    resultsContainer.appendChild(div);
+                });
+            })
+            .catch(error => console.error("Error fetching passengers:", error));
+    });
 }
 
 
