@@ -130,4 +130,61 @@ public class PassengerDAO {
         }
         return -1; // Return -1 if not found
     }
+
+	public static boolean updatePassenger(Passenger passenger) {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    boolean updated = false;
+
+	    try {
+	        conn = connect();
+	        String sql = "UPDATE passengers SET username=?, fullName=?, age=?, dob=?, gender=?, address=?, contact=?, idProof=? WHERE id=?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, passenger.getUsername());
+	        pstmt.setString(2, passenger.getFullName());
+	        pstmt.setInt(3, passenger.getAge());
+	        pstmt.setString(4, passenger.getDob());
+	        pstmt.setString(5, passenger.getGender());
+	        pstmt.setString(6, passenger.getAddress());
+	        pstmt.setString(7, passenger.getContact());
+	        pstmt.setString(8, passenger.getIdProof());
+	        pstmt.setInt(9, passenger.getId());
+
+	        int rowsUpdated = pstmt.executeUpdate();
+	        updated = rowsUpdated > 0;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } 
+	    
+	    return updated;
+	}
+
+	public static Passenger getPassengerById(int id) {
+	    String sql = "SELECT * FROM passengers WHERE id = ?";
+	    try (Connection conn = connect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setInt(1, id);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            return new Passenger(
+	                rs.getInt("id"),
+	                rs.getString("username"),
+	                rs.getString("fullName"),
+	                rs.getInt("age"),
+	                rs.getString("dob"),
+	                rs.getString("gender"),
+	                rs.getString("address"),
+	                rs.getString("contact"),
+	                rs.getString("idProof")
+	            );
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null; // Return null if not found
+	}
+
 }

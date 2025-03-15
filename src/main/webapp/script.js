@@ -70,71 +70,71 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // Dashboard Stats
 function getDashboardStats() {
-    fetch('getDashboardStats')
-        .then(response => response.json())
-        .then(data => {
-            let passengerElement = document.getElementById("totalPassengers");
-            let trainElement = document.getElementById("totalTrains");
-            let ticketElement = document.getElementById("totalTickets");
+	fetch('getDashboardStats')
+		.then(response => response.json())
+		.then(data => {
+			let passengerElement = document.getElementById("totalPassengers");
+			let trainElement = document.getElementById("totalTrains");
+			let ticketElement = document.getElementById("totalTickets");
 
-            if (passengerElement && trainElement && ticketElement) {
-                passengerElement.textContent = data.totalPassengers;
-                trainElement.textContent = data.totalTrains;
-                ticketElement.textContent = data.totalBookings; // Update total tickets issued
-            } else {
-                console.error("Error: One or more elements (totalPassengers, totalTrains, totalTickets) not found.");
-            }
-        })
-        .catch(error => console.error("Error fetching dashboard stats:", error));
+			if (passengerElement && trainElement && ticketElement) {
+				passengerElement.textContent = data.totalPassengers;
+				trainElement.textContent = data.totalTrains;
+				ticketElement.textContent = data.totalBookings; // Update total tickets issued
+			} else {
+				console.error("Error: One or more elements (totalPassengers, totalTrains, totalTickets) not found.");
+			}
+		})
+		.catch(error => console.error("Error fetching dashboard stats:", error));
 }
 
 function getLatestBookings() {
-    fetch('getLatestBookings')
-        .then(response => response.json())
-        .then(data => {
-            let tableBody = document.querySelector(".order table tbody");
-            tableBody.innerHTML = ""; // Clear previous content
+	fetch('getLatestBookings')
+		.then(response => response.json())
+		.then(data => {
+			let tableBody = document.querySelector(".order table tbody");
+			tableBody.innerHTML = ""; // Clear previous content
 
-            data.forEach(booking => {
-                let statusClass = getStatusClass(booking.status); // Function to get class for status badge
+			data.forEach(booking => {
+				let statusClass = getStatusClass(booking.status); // Function to get class for status badge
 
-                let row = `<tr>
+				let row = `<tr>
                             <td><img src="https://placehold.co/600x400/png">
                                 <p>${booking.passengerName}</p></td>
                             <td>${booking.travelDate}</td>
                             <td><span class="status ${statusClass}">${booking.status}</span></td>
                           </tr>`;
-                tableBody.innerHTML += row;
-            });
-        })
-        .catch(error => console.error("Error fetching latest bookings:", error));
+				tableBody.innerHTML += row;
+			});
+		})
+		.catch(error => console.error("Error fetching latest bookings:", error));
 }
 
 // Function to return the appropriate status class
 function getStatusClass(status) {
-    switch (status.toLowerCase()) {
-        case "confirmed": return "completed";
-        case "pending": return "pending";
-        case "processing": return "process";
-        default: return "pending"; // Default class
-    }
+	switch (status.toLowerCase()) {
+		case "confirmed": return "completed";
+		case "pending": return "pending";
+		case "processing": return "process";
+		default: return "pending"; // Default class
+	}
 }
 
 // Search with PNR
 function searchPNR() {
-    let pnr = document.getElementById("pnrInput").value.trim();
-    if (pnr === "") {
-        alert("Please enter a valid PNR number.");
-        return;
-    }
+	let pnr = document.getElementById("pnrInput").value.trim();
+	if (pnr === "") {
+		alert("Please enter a valid PNR number.");
+		return;
+	}
 
-    fetch(`getBookingByPNR?pnr=${pnr}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                document.getElementById("pnrResult").innerHTML = `<p class="error">${data.error}</p>`;
-            } else {
-                document.getElementById("pnrResult").innerHTML = `
+	fetch(`getBookingByPNR?pnr=${pnr}`)
+		.then(response => response.json())
+		.then(data => {
+			if (data.error) {
+				document.getElementById("pnrResult").innerHTML = `<p class="error">${data.error}</p>`;
+			} else {
+				document.getElementById("pnrResult").innerHTML = `
                     <div class="booking-card">
                         <h3>PNR: ${data.pnr}</h3>
                         <p><strong>Passenger:</strong> ${data.passengerName}</p>
@@ -146,12 +146,12 @@ function searchPNR() {
                         <p><strong>Status:</strong> <span class="status ${data.status.toLowerCase()}">${data.status}</span></p>
                         <p><strong>Price:</strong> ₹${data.price}</p>
                     </div>`;
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching PNR details:", error);
-            document.getElementById("pnrResult").innerHTML = `<p class="error">Error retrieving details. Try again.</p>`;
-        });
+			}
+		})
+		.catch(error => {
+			console.error("Error fetching PNR details:", error);
+			document.getElementById("pnrResult").innerHTML = `<p class="error">Error retrieving details. Try again.</p>`;
+		});
 }
 
 
@@ -352,6 +352,71 @@ function handlePassengerFormSubmit(event) {
 		.catch(error => console.error("❌ Fetch Error:", error));
 }
 
+// Function to edit passenger details
+function editPassenger(passengerId) {
+    fetch(`getPassengerById?id=${passengerId}`)
+        .then(response => response.json())
+        .then(passenger => {
+            if (!passenger || passenger.status === "error") {
+                alert("Error fetching passenger details.");
+                return;
+            }
+
+            // Open modal
+            document.getElementById("passengerModal").style.display = "block";
+            document.getElementById("modalTitle").innerText = "Edit Passenger";
+
+            // Populate form with passenger data
+            let form = document.getElementById("passengerForm");
+            form.elements["username"].value = passenger.username;
+            form.elements["fullName"].value = passenger.fullName;
+            form.elements["age"].value = passenger.age;
+            form.elements["dob"].value = passenger.dob;
+            form.elements["gender"].value = passenger.gender;
+            form.elements["address"].value = passenger.address;
+            form.elements["contact"].value = passenger.contact;
+            form.elements["idProof"].value = passenger.idProof;
+
+            // Ensure the ID field exists
+            let idField = form.querySelector("input[name='id']");
+            if (!idField) {
+                idField = document.createElement("input");
+                idField.type = "hidden";
+                idField.name = "id";
+                form.appendChild(idField);
+            }
+            idField.value = passenger.id;
+
+            // Change save button behavior to update
+            document.getElementById("savePassengerBtn").setAttribute("onclick", "updatePassenger()");
+        })
+        .catch(error => console.error("Error fetching passenger details:", error));
+}
+
+// Function to update passenger details
+function updatePassenger() {
+	event.preventDefault(); // Prevent default form submission
+
+	let formData = new FormData(document.getElementById("passengerForm"));
+
+	fetch("updatePassenger", {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: new URLSearchParams(formData).toString()
+	})
+		.then(response => response.json())
+		.then(data => {
+			if (data.status === "success") {
+				alert("Passenger updated successfully!");
+				document.getElementById("passengerModal").style.display = "none";
+				fetchPassengers(); // Refresh the list
+			} else {
+				alert("Error updating passenger: " + (data.message || "Unknown error"));
+			}
+		})
+		.catch(error => console.error("❌ Fetch Error:", error));
+}
+
 
 // ------------------------------- Train Schedule -----------------------------------------
 
@@ -529,7 +594,7 @@ function confirmBooking() {
 		travelDate: travelDate,
 		trainClass: selectedTrain.trainClass,
 		seat: passenger.seatPreference,
-		seatPreference: passenger.seatPreference, 
+		seatPreference: passenger.seatPreference,
 		foodPreference: passenger.foodPreference,
 		status: "Confirmed",
 		price: selectedTrain.price
@@ -660,14 +725,14 @@ function attachPassengerSearchListener() {
 }
 
 function loadAllBookings() {
-    fetch("getAllBookings")
-        .then(response => response.json())
-        .then(data => {
-            let bookingTable = document.getElementById("bookingTable");
-            bookingTable.innerHTML = "";
+	fetch("getAllBookings")
+		.then(response => response.json())
+		.then(data => {
+			let bookingTable = document.getElementById("bookingTable");
+			bookingTable.innerHTML = "";
 
-            data.forEach(booking => {
-                bookingTable.innerHTML += `
+			data.forEach(booking => {
+				bookingTable.innerHTML += `
                     <tr>
                         <td>${booking.pnr}</td>
                         <td>${booking.passengerName}</td>
@@ -677,9 +742,9 @@ function loadAllBookings() {
                         <td>${booking.seat}</td>
                         <td>${booking.status}</td>
                     </tr>`;
-            });
-        })
-        .catch(error => console.error("Error loading bookings:", error));
+			});
+		})
+		.catch(error => console.error("Error loading bookings:", error));
 }
 
 
