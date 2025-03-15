@@ -1,22 +1,25 @@
 package com.pms.model;
 
 public class Booking {
-	private String pnr;
-	private int passengerId;
-	private String passengerName;
-	private String trainNo;
-	private String trainName;
-	private String travelDate;
-	private String trainClass;
-	private String seat;
-	private String status;
-	private double price;
+    private String pnr;
+    private int passengerId;
+    private String passengerName;
+    private String trainNo;
+    private String trainName;
+    private String travelDate;
+    private String trainClass;
+    private String seat;
+    private String status;
+    private double price;
+    private String seatPreference;
+    private String foodPreference;
+    private String seatNumber;
 	
 	public Booking() {
 	}
 
 	public Booking(String pnr, int passengerId, String passengerName, String trainNo, String trainName, String travelDate, String trainClass,
-			String seat, String status, double price) {
+			String seat, String status, double price, String seatPreference, String foodPreference, String seatNumber) {
 		this.pnr = pnr;
 		this.passengerId = passengerId;
 		this.passengerName = passengerName;
@@ -27,6 +30,9 @@ public class Booking {
 		this.seat = seat;
 		this.status = status;
 		this.price = price;
+		this.seatPreference = seatPreference;
+		this.foodPreference = foodPreference;
+		this.seatNumber = seatNumber;
 	}
 
 	public String getPnr() {
@@ -107,6 +113,30 @@ public class Booking {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	
+	public String getSeatPreference() {
+		return seatPreference;
+	}
+
+	public void setSeatPreference(String seatPreference) {
+		this.seatPreference = seatPreference;
+	}
+
+	public String getFoodPreference() {
+		return foodPreference;
+	}
+
+	public void setFoodPreference(String foodPreference) {
+		this.foodPreference = foodPreference;
+	}
+
+	public String getSeatNumber() {
+		return seatNumber;
+	}
+
+	public void setSeatNumber(String seatNumber) {
+		this.seatNumber = seatNumber;
 	}
 
 }

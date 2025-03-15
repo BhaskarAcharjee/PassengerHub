@@ -28,13 +28,21 @@ public class GetAllBookingsServlet extends HttpServlet {
 		json.append("[");
 		for (int i = 0; i < bookings.size(); i++) {
 			Booking b = bookings.get(i);
-			json.append("{").append("\"pnr\":\"").append(b.getPnr()).append("\",").append("\"passengerId\":")
-					.append(b.getPassengerId()).append(",").append("\"passengerName\":\"").append(b.getPassengerName())
-					.append("\",").append("\"trainNo\":\"").append(b.getTrainNo()).append("\",")
-					.append("\"trainName\":\"").append(b.getTrainName()).append("\",").append("\"travelDate\":\"")
-					.append(b.getTravelDate()).append("\",").append("\"trainClass\":\"").append(b.getTrainClass())
-					.append("\",").append("\"seat\":\"").append(b.getSeat()).append("\",").append("\"status\":\"")
-					.append(b.getStatus()).append("\",").append("\"price\":").append(b.getPrice()).append("}");
+			json.append("{")
+				.append("\"pnr\":\"").append(b.getPnr()).append("\",")
+				.append("\"passengerId\":").append(b.getPassengerId()).append(",")
+				.append("\"passengerName\":\"").append(b.getPassengerName()).append("\",")
+				.append("\"trainNo\":\"").append(b.getTrainNo()).append("\",")
+				.append("\"trainName\":\"").append(b.getTrainName()).append("\",")
+				.append("\"travelDate\":\"").append(b.getTravelDate()).append("\",")
+				.append("\"trainClass\":\"").append(b.getTrainClass()).append("\",")
+				.append("\"seat\":\"").append(b.getSeat()).append("\",")
+				.append("\"seatNumber\":\"").append(b.getSeatNumber()).append("\",")
+				.append("\"seatPreference\":\"").append(b.getSeatPreference()).append("\",") 
+				.append("\"foodPreference\":\"").append(b.getFoodPreference()).append("\",")
+				.append("\"status\":\"").append(b.getStatus()).append("\",")
+				.append("\"price\":").append(b.getPrice())
+				.append("}");
 			if (i < bookings.size() - 1) {
 				json.append(",");
 			}
