@@ -112,4 +112,22 @@ public class PassengerDAO {
 		}
 		return passengers;
 	}
+	
+	public static int getPassengerId(String usernameOrName) {
+        String sql = "SELECT id FROM passengers WHERE username = ? OR fullName = ?";
+        try (Connection conn = connect(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, usernameOrName);
+            stmt.setString(2, usernameOrName);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id"); // Fetch passenger ID
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if not found
+    }
 }

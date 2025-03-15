@@ -20,6 +20,7 @@ public class BookingServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         int passengerId = Integer.parseInt(request.getParameter("passengerId"));
+        String passengerName = request.getParameter("passengerName");
         String trainNo = request.getParameter("trainNo");
         String trainName = request.getParameter("trainName");
         String travelDate = request.getParameter("travelDate");
@@ -29,7 +30,7 @@ public class BookingServlet extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
 
         String pnr = BookingDAO.generatePNR();
-        Booking booking = new Booking(pnr, passengerId, trainNo, trainName, travelDate, trainClass, seat, status, price);
+        Booking booking = new Booking(pnr, passengerId, passengerName, trainNo, trainName, travelDate, trainClass, seat, status, price);
 
         boolean success = BookingDAO.saveBooking(booking);
 

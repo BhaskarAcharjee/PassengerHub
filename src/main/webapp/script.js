@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					}
 					if (page === "ticket-bookings.html") {
 						loadTrainData();
+						loadAllBookings();
 						attachPassengerSearchListener();
 					}
 				}, 200);
@@ -406,8 +407,6 @@ function selectTrain(trainNo, trainName, trainClass, price) {
 }
 
 
-
-
 // Reset Ticket Booking UI When Loading the Page
 function resetTicketBookingUI() {
 	selectedTrain = null;
@@ -445,6 +444,48 @@ function addPassenger() {
 }
 
 function confirmBooking() {
+	if (!selectedTrain || selectedPassengers.length === 0) {
+		alert("Please select a train and at least one passenger.");
+		return;
+	}
+
+	let travelDate = document.getElementById("travelDate").value;
+
+	let bookingData = selectedPassengers.map(passenger => ({
+		passengerId: passenger.searchValue,  // retrive passenger ID from PassengerName
+		passengerName: passenger.searchValue,
+		trainNo: selectedTrain.trainNo,
+		trainName: selectedTrain.trainName,
+		travelDate: travelDate,
+		trainClass: selectedTrain.trainClass,
+		seat: passenger.seatPreference,
+		status: "Confirmed",
+		price: selectedTrain.price
+	}));
+	
+	console.log(bookingData);
+
+	fetch("confirmBooking", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(bookingData)
+	})
+		.then(response => response.json())
+		.then(data => {
+			if (data.success) {
+				alert("Booking confirmed! Your PNR: " + data.pnr);
+				loadAllBookings(); // Reload the bookings table
+			} else {
+				alert("Booking failed: " + data.message);
+			}
+		})
+		.catch(error => console.error("Error confirming booking:", error));
+
+	/*.then(response => response.text()) // Change .json() to .text() to debug raw response
+	.then(data => console.log("Server Response:", data))
+	.catch(error => console.error("Error confirming booking:", error));*/
+
+
 	// Create the ticket UI dynamically
 	let ticketHTML = `
     <div class="ticket-container">
@@ -505,45 +546,68 @@ function confirmBooking() {
 
 // Function to Attach Search Listener After the Ticket Bookings Page Loads
 function attachPassengerSearchListener() {
-    let passengerSearch = document.getElementById("passengerSearch");
-    let resultsContainer = document.getElementById("passengerResults");
+	let passengerSearch = document.getElementById("passengerSearch");
+	let resultsContainer = document.getElementById("passengerResults");
 
-    if (!passengerSearch || !resultsContainer) {
-        console.error("❌ Passenger search elements not found. Skipping listener attachment.");
-        return;
-    }
+	if (!passengerSearch || !resultsContainer) {
+		console.error("❌ Passenger search elements not found. Skipping listener attachment.");
+		return;
+	}
 
-    passengerSearch.addEventListener("input", function () {
-        let searchQuery = this.value.trim();
+	passengerSearch.addEventListener("input", function() {
+		let searchQuery = this.value.trim();
 
-        if (searchQuery.length < 1) {
-            resultsContainer.innerHTML = ""; // Clear results if no input
-            return;
-        }
+		if (searchQuery.length < 1) {
+			resultsContainer.innerHTML = ""; // Clear results if no input
+			return;
+		}
 
-        fetch(`searchPassenger?query=${searchQuery}`)
-            .then(response => response.json())
-            .then(data => {
-                resultsContainer.innerHTML = ""; // Clear old suggestions
+		fetch(`searchPassenger?query=${searchQuery}`)
+			.then(response => response.json())
+			.then(data => {
+				resultsContainer.innerHTML = ""; // Clear old suggestions
 
-                if (data.length === 0) {
-                    resultsContainer.innerHTML = "<p>No matching passengers found.</p>";
-                    return;
-                }
+				if (data.length === 0) {
+					resultsContainer.innerHTML = "<p>No matching passengers found.</p>";
+					return;
+				}
 
-                data.forEach(passenger => {
-                    let div = document.createElement("div");
-                    div.classList.add("passenger-item");
-                    div.textContent = `${passenger.fullName} (${passenger.username})`;
-                    div.onclick = function () {
-                        passengerSearch.value = passenger.fullName;
-                        resultsContainer.innerHTML = ""; // Hide suggestions after selection
-                    };
-                    resultsContainer.appendChild(div);
-                });
-            })
-            .catch(error => console.error("Error fetching passengers:", error));
-    });
+				data.forEach(passenger => {
+					let div = document.createElement("div");
+					div.classList.add("passenger-item");
+					div.textContent = `${passenger.fullName} (${passenger.username})`;
+					div.onclick = function() {
+						passengerSearch.value = passenger.fullName;
+						resultsContainer.innerHTML = ""; // Hide suggestions after selection
+					};
+					resultsContainer.appendChild(div);
+				});
+			})
+			.catch(error => console.error("Error fetching passengers:", error));
+	});
+}
+
+function loadAllBookings() {
+	fetch("getAllBookings")
+		.then(response => response.json())
+		.then(data => {
+			let bookingTable = document.getElementById("bookingTable");
+			bookingTable.innerHTML = ""; // Clear existing rows
+
+			data.forEach(booking => {
+				bookingTable.innerHTML += `
+                    <tr>
+                        <td>${booking.pnr}</td>
+                        <td>${booking.passengerName}</td>
+                        <td>${booking.trainNo}</td>
+                        <td>${booking.travelDate}</td>
+                        <td>${booking.trainClass}</td>
+                        <td>${booking.seat}</td>
+                        <td>${booking.status}</td>
+                    </tr>`;
+			});
+		})
+		.catch(error => console.error("Error loading bookings:", error));
 }
 
 
