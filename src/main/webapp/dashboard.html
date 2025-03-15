@@ -34,27 +34,19 @@
 				</tr>
 			</thead>
 			<tbody>
-                <!-- Bookings will be dynamically added here -->
+				<!-- Bookings will be dynamically added here -->
 			</tbody>
 		</table>
 	</div>
 
-	<div class="todo">
+	<div class="pnr-search">
 		<div class="head">
-			<h3>Admin Tasks</h3>
-			<i class='bx bx-plus icon'></i> <i class='bx bx-filter'></i>
+			<h3>Search PNR</h3>
 		</div>
-		<ul class="todo-list">
-			<li class="completed">
-				<p>Verify pending bookings</p> <i
-				class='bx bx-dots-vertical-rounded'></i>
-			</li>
-			<li class="not-completed">
-				<p>Update Train schedules</p> <i class='bx bx-dots-vertical-rounded'></i>
-			</li>
-			<li class="completed">
-				<p>Check Payment Status</p> <i class='bx bx-dots-vertical-rounded'></i>
-			</li>
-		</ul>
+		<div class="search-box">
+			<input type="text" id="pnrInput" placeholder="Enter PNR Number">
+			<button onclick="searchPNR()">Search</button>
+		</div>
+		<div id="pnrResult" class="booking-details"></div>
 	</div>
 </div>

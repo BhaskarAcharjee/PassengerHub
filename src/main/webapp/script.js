@@ -120,6 +120,41 @@ function getStatusClass(status) {
     }
 }
 
+// Search with PNR
+function searchPNR() {
+    let pnr = document.getElementById("pnrInput").value.trim();
+    if (pnr === "") {
+        alert("Please enter a valid PNR number.");
+        return;
+    }
+
+    fetch(`getBookingByPNR?pnr=${pnr}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById("pnrResult").innerHTML = `<p class="error">${data.error}</p>`;
+            } else {
+                document.getElementById("pnrResult").innerHTML = `
+                    <div class="booking-card">
+                        <h3>PNR: ${data.pnr}</h3>
+                        <p><strong>Passenger:</strong> ${data.passengerName}</p>
+                        <p><strong>Train:</strong> ${data.trainNo} - ${data.trainName}</p>
+                        <p><strong>Travel Date:</strong> ${data.travelDate}</p>
+                        <p><strong>Class:</strong> ${data.trainClass}</p>
+                        <p><strong>Seat:</strong> ${data.seatNumber} (${data.seatPreference})</p>
+                        <p><strong>Food Preference:</strong> ${data.foodPreference}</p>
+                        <p><strong>Status:</strong> <span class="status ${data.status.toLowerCase()}">${data.status}</span></p>
+                        <p><strong>Price:</strong> ₹${data.price}</p>
+                    </div>`;
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching PNR details:", error);
+            document.getElementById("pnrResult").innerHTML = `<p class="error">Error retrieving details. Try again.</p>`;
+        });
+}
+
+
 
 // ------------------------------- Passenger List -----------------------------------------
 

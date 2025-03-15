@@ -184,5 +184,38 @@ public class BookingDAO {
 	    }
 	    return bookings;
 	}
+	
+	public static Booking getBookingByPNR(String pnr) {
+	    String sql = "SELECT * FROM bookings WHERE pnr = ?";
+	    try (Connection conn = connect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, pnr);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            System.out.println("Booking found for PNR: " + pnr);
+	            Booking booking = new Booking();
+	            booking.setPnr(rs.getString("pnr"));
+	            booking.setPassengerName(rs.getString("passenger_name"));
+	            booking.setTrainNo(rs.getString("train_no"));
+	            booking.setTrainName(rs.getString("train_name"));
+	            booking.setTravelDate(rs.getString("travel_date"));
+	            booking.setTrainClass(rs.getString("train_class"));
+	            booking.setSeatNumber(rs.getString("seat_number"));
+	            booking.setSeatPreference(rs.getString("seat_preference"));
+	            booking.setFoodPreference(rs.getString("food_preference"));
+	            booking.setStatus(rs.getString("status"));
+	            booking.setPrice(rs.getDouble("price"));
+
+	            return booking;
+	        } else {
+	            System.out.println("No booking found for PNR: " + pnr);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
 
 }
