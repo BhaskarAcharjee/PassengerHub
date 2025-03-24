@@ -610,8 +610,130 @@ function confirmBooking() {
 		.then(response => response.json())
 		.then(data => {
 			if (data.success) {
-				alert("Booking confirmed! Your PNR: " + data.pnr);
+
+				/*alert("Booking confirmed! Your PNR: " + data.pnr);*/
 				loadAllBookings();
+				
+				// Create the ticket UI dynamically
+				let ticketHTML = `
+					    <div class="ticket-main-content">
+					        <div class="ticket">
+					            <div class="ticket__main">
+					                <div class="header">${selectedTrain.trainName}</div>
+
+					                <div class="info passenger">
+					                    <div class="info__item">Passenger</div>
+					                    <div class="info__detail">Bhaskar</div>
+					                </div>
+
+					                <div class="info platform">
+					                    <span>Depart</span>
+					                    <span>from</span>
+					                    <span>platform</span>
+					                    <div class="number">
+					                        <div>9</div>
+					                        <div>
+					                            <span>3</span>
+					                            <span>4</span>
+					                        </div>
+					                    </div>
+					                </div>
+
+					                <div class="info departure">
+					                    <div class="info__item">Depart</div>
+					                    <div class="info__detail">Kashmir</div>
+					                </div>
+
+					                <div class="info arrival">
+					                    <div class="info__item">Arrive</div>
+					                    <div class="info__detail">Kolkata</div>
+					                </div>
+
+					                <div class="info date">
+					                    <div class="info__item">Date</div>
+					                    <div class="info__detail">${travelDate}</div>
+					                </div>
+
+					                <div class="info time">
+					                    <div class="info__item">Time</div>
+					                    <div class="info__detail">11:00AM</div>
+					                </div>
+
+					                <div class="info carriage">
+					                    <div class="info__item">Car</div>
+					                    <div class="info__detail">4</div>
+					                </div>
+
+					                <div class="info seat">
+					                    <div class="info__item">Seat</div>
+					                    <div class="info__detail">6B</div>
+					                </div>
+
+					                <div class="fineprint">
+					                    <p>Boarding begins 30 minutes before departure. Snacks available for purchase from The HungerBox App.</p>
+					                    <p>This ticket is Non-refundable • PassengerHub Authority</p>
+					                </div>
+
+					                <div class="snack">
+									<svg x="0px" y="0px" viewBox="0 0 92.81 122.88" style="enable-background:new 0 0 92.81 122.88" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style><g><path class="st0" d="M66.69,101.35H26.68l-4.7,6.94h49.24L66.69,101.35L66.69,101.35z M17.56,114.81l-5.47,8.07H0l19.64-29.46 h-3.49c-4.76,0-8.66-3.9-8.66-8.66V8.66C7.5,3.9,11.39,0,16.15,0h61.22c4.76,0,8.66,3.9,8.66,8.66v76.1c0,4.76-3.9,8.66-8.66,8.66 h-3.4l18.83,29.04H80.45l-4.99-7.65H17.56L17.56,114.81z M62.97,67.66h10.48c1.14,0,2.07,0.93,2.07,2.07V80.2 c0,1.14-0.93,2.07-2.07,2.07H62.97c-1.14,0-2.07-0.93-2.07-2.07V69.72C60.9,68.59,61.83,67.66,62.97,67.66L62.97,67.66z M18.98,67.66h10.48c1.14,0,2.07,0.93,2.07,2.07V80.2c0,1.14-0.93,2.07-2.07,2.07H18.98c-1.14,0-2.07-0.93-2.07-2.07V69.72 C16.91,68.59,17.84,67.66,18.98,67.66L18.98,67.66z M25.1,16.7h42.81c4.6,0,8.36,3.76,8.36,8.37v13.17c0,4.6-3.76,8.36-8.36,8.36 H25.1c-4.6,0-8.36-3.76-8.36-8.36V25.07C16.74,20.47,20.5,16.7,25.1,16.7L25.1,16.7z M38.33,3.8h16.2C55.34,3.8,56,4.46,56,5.27 v6.38c0,0.81-0.66,1.47-1.47,1.47h-16.2c-0.81,0-1.47-0.66-1.47-1.47V5.27C36.85,4.46,37.51,3.8,38.33,3.8L38.33,3.8z"/></g></svg>
+					                </div>
+
+					                <div class="barcode">
+					                    <div class="barcode__scan"></div>
+					                    <div class="barcode__id">${data.pnr}</div>
+					                </div>
+					            </div>
+
+					            <div class="ticket__side">
+					                <div class="logo">
+					                    <p>${selectedTrain.trainName}</p>
+					                </div>
+
+					                <div class="info side-arrive">
+					                    <div class="info__item">Arrive</div>
+					                    <div class="info__detail">Kolkata</div>
+					                </div>
+
+					                <div class="info side-depart">
+					                    <div class="info__item">Depart</div>
+					                    <div class="info__detail">Kashmir</div>
+					                </div>
+
+					                <div class="info side-date">
+					                    <div class="info__item">Date</div>
+					                    <div class="info__detail">${travelDate}</div>
+					                </div>
+
+					                <div class="info side-time">
+					                    <div class="info__item">Time</div>
+					                    <div class="info__detail">11:00AM</div>
+					                </div>
+
+					                <div class="barcode">
+					                    <div class="barcode__scan"></div>
+					                    <div class="barcode__id">${data.pnr}</div>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+					`;
+
+				// Replace the left panel with the ticket UI
+				let rightPanel = document.querySelector(".right-panel");
+				if (rightPanel) {
+					rightPanel.outerHTML = ticketHTML; // Completely replace it
+				}
+
+				// Hide unnecessary UI elements
+				let confirmBookingBtn = document.getElementById("confirmBookingBtn");
+				if (confirmBookingBtn) confirmBookingBtn.style.display = "none";
+
+				// Hide the right panel after booking
+				let leftPanel = document.querySelector(".left-panel");
+				if (leftPanel) {
+					leftPanel.style.display = "none";
+				}
+
 			} else {
 				alert("Booking failed: " + data.message);
 			}
@@ -621,126 +743,6 @@ function confirmBooking() {
 	/*.then(response => response.text()) // Change .json() to .text() to debug raw response
 	.then(data => console.log("Server Response:", data))
 	.catch(error => console.error("Error confirming booking:", error));*/
-
-
-	// Create the ticket UI dynamically
-	let ticketHTML = `
-	    <div class="ticket-main-content">
-	        <div class="ticket">
-	            <div class="ticket__main">
-	                <div class="header">${selectedTrain.trainName}</div>
-
-	                <div class="info passenger">
-	                    <div class="info__item">Passenger</div>
-	                    <div class="info__detail">Bhaskar</div>
-	                </div>
-
-	                <div class="info platform">
-	                    <span>Depart</span>
-	                    <span>from</span>
-	                    <span>platform</span>
-	                    <div class="number">
-	                        <div>9</div>
-	                        <div>
-	                            <span>3</span>
-	                            <span>4</span>
-	                        </div>
-	                    </div>
-	                </div>
-
-	                <div class="info departure">
-	                    <div class="info__item">Depart</div>
-	                    <div class="info__detail">Kashmir</div>
-	                </div>
-
-	                <div class="info arrival">
-	                    <div class="info__item">Arrive</div>
-	                    <div class="info__detail">Kolkata</div>
-	                </div>
-
-	                <div class="info date">
-	                    <div class="info__item">Date</div>
-	                    <div class="info__detail">${new Date().toDateString()}</div>
-	                </div>
-
-	                <div class="info time">
-	                    <div class="info__item">Time</div>
-	                    <div class="info__detail">11:00AM</div>
-	                </div>
-
-	                <div class="info carriage">
-	                    <div class="info__item">Car</div>
-	                    <div class="info__detail">4</div>
-	                </div>
-
-	                <div class="info seat">
-	                    <div class="info__item">Seat</div>
-	                    <div class="info__detail">6B</div>
-	                </div>
-
-	                <div class="fineprint">
-	                    <p>Boarding begins 30 minutes before departure. Snacks available for purchase from The HungerBox App.</p>
-	                    <p>This ticket is Non-refundable • PassengerHub Authority</p>
-	                </div>
-
-	                <div class="snack">
-					<svg x="0px" y="0px" viewBox="0 0 92.81 122.88" style="enable-background:new 0 0 92.81 122.88" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style><g><path class="st0" d="M66.69,101.35H26.68l-4.7,6.94h49.24L66.69,101.35L66.69,101.35z M17.56,114.81l-5.47,8.07H0l19.64-29.46 h-3.49c-4.76,0-8.66-3.9-8.66-8.66V8.66C7.5,3.9,11.39,0,16.15,0h61.22c4.76,0,8.66,3.9,8.66,8.66v76.1c0,4.76-3.9,8.66-8.66,8.66 h-3.4l18.83,29.04H80.45l-4.99-7.65H17.56L17.56,114.81z M62.97,67.66h10.48c1.14,0,2.07,0.93,2.07,2.07V80.2 c0,1.14-0.93,2.07-2.07,2.07H62.97c-1.14,0-2.07-0.93-2.07-2.07V69.72C60.9,68.59,61.83,67.66,62.97,67.66L62.97,67.66z M18.98,67.66h10.48c1.14,0,2.07,0.93,2.07,2.07V80.2c0,1.14-0.93,2.07-2.07,2.07H18.98c-1.14,0-2.07-0.93-2.07-2.07V69.72 C16.91,68.59,17.84,67.66,18.98,67.66L18.98,67.66z M25.1,16.7h42.81c4.6,0,8.36,3.76,8.36,8.37v13.17c0,4.6-3.76,8.36-8.36,8.36 H25.1c-4.6,0-8.36-3.76-8.36-8.36V25.07C16.74,20.47,20.5,16.7,25.1,16.7L25.1,16.7z M38.33,3.8h16.2C55.34,3.8,56,4.46,56,5.27 v6.38c0,0.81-0.66,1.47-1.47,1.47h-16.2c-0.81,0-1.47-0.66-1.47-1.47V5.27C36.85,4.46,37.51,3.8,38.33,3.8L38.33,3.8z"/></g></svg>
-	                </div>
-
-	                <div class="barcode">
-	                    <div class="barcode__scan"></div>
-	                    <div class="barcode__id">${data.pnr}</div>
-	                </div>
-	            </div>
-
-	            <div class="ticket__side">
-	                <div class="logo">
-	                    <p>${selectedTrain.trainName}</p>
-	                </div>
-
-	                <div class="info side-arrive">
-	                    <div class="info__item">Arrive</div>
-	                    <div class="info__detail">Kolkata</div>
-	                </div>
-
-	                <div class="info side-depart">
-	                    <div class="info__item">Depart</div>
-	                    <div class="info__detail">Kashmir</div>
-	                </div>
-
-	                <div class="info side-date">
-	                    <div class="info__item">Date</div>
-	                    <div class="info__detail">${travelDate}</div>
-	                </div>
-
-	                <div class="info side-time">
-	                    <div class="info__item">Time</div>
-	                    <div class="info__detail">11:00AM</div>
-	                </div>
-
-	                <div class="barcode">
-	                    <div class="barcode__scan"></div>
-	                    <div class="barcode__id">${data.pnr}</div>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	`;
-
-	// Replace the left panel with the ticket UI
-	let rightPanel = document.querySelector(".right-panel");
-	if (rightPanel) {
-		rightPanel.outerHTML = ticketHTML; // Completely replace it
-	}
-
-	let confirmBookingBtn = document.getElementById("confirmBookingBtn");
-	if (confirmBookingBtn) confirmBookingBtn.style.display = "none";
-
-	// Hide the right panel after booking
-	let leftPanel = document.querySelector(".left-panel");
-	if (leftPanel) {
-		leftPanel.style.display = "none";
-	}
 }
 
 // Function to Attach Search Listener After the Ticket Bookings Page Loads
@@ -803,10 +805,33 @@ function loadAllBookings() {
                         <td>${booking.trainClass}</td>
                         <td>${booking.seat}</td>
                         <td>${booking.status}</td>
+						<td><button class="delete-btn" onclick="deleteBooking('${booking.pnr}')">🗑️ Delete</button></td>
                     </tr>`;
 			});
 		})
 		.catch(error => console.error("Error loading bookings:", error));
+}
+
+
+/*Handle Delete Booking*/
+function deleteBooking(pnr) {
+	if (!confirm("Are you sure you want to delete this booking?")) return;
+
+	fetch("deleteBooking", {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: "pnr=" + encodeURIComponent(pnr)
+	})
+		.then(response => response.json())
+		.then(data => {
+			if (data.status === "success") {
+				alert("Booking deleted successfully!");
+				loadAllBookings(); // Refresh UI after deletion
+			} else {
+				alert("Error deleting booking: " + (data.message || "Unknown error"));
+			}
+		})
+		.catch(error => console.error("Error:", error));
 }
 
 
