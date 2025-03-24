@@ -15,6 +15,8 @@
 	href="style.css?v=<%=System.currentTimeMillis()%>">
 <link rel="stylesheet"
 	href="style1.css?v=<%=System.currentTimeMillis()%>">
+	<link rel="stylesheet"
+	href="ticket.css?v=<%=System.currentTimeMillis()%>">
 
 <title>Passenger Management</title>
 </head>

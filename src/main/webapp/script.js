@@ -354,43 +354,43 @@ function handlePassengerFormSubmit(event) {
 
 // Function to edit passenger details
 function editPassenger(passengerId) {
-    fetch(`getPassengerById?id=${passengerId}`)
-        .then(response => response.json())
-        .then(passenger => {
-            if (!passenger || passenger.status === "error") {
-                alert("Error fetching passenger details.");
-                return;
-            }
+	fetch(`getPassengerById?id=${passengerId}`)
+		.then(response => response.json())
+		.then(passenger => {
+			if (!passenger || passenger.status === "error") {
+				alert("Error fetching passenger details.");
+				return;
+			}
 
-            // Open modal
-            document.getElementById("passengerModal").style.display = "block";
-            document.getElementById("modalTitle").innerText = "Edit Passenger";
+			// Open modal
+			document.getElementById("passengerModal").style.display = "block";
+			document.getElementById("modalTitle").innerText = "Edit Passenger";
 
-            // Populate form with passenger data
-            let form = document.getElementById("passengerForm");
-            form.elements["username"].value = passenger.username;
-            form.elements["fullName"].value = passenger.fullName;
-            form.elements["age"].value = passenger.age;
-            form.elements["dob"].value = passenger.dob;
-            form.elements["gender"].value = passenger.gender;
-            form.elements["address"].value = passenger.address;
-            form.elements["contact"].value = passenger.contact;
-            form.elements["idProof"].value = passenger.idProof;
+			// Populate form with passenger data
+			let form = document.getElementById("passengerForm");
+			form.elements["username"].value = passenger.username;
+			form.elements["fullName"].value = passenger.fullName;
+			form.elements["age"].value = passenger.age;
+			form.elements["dob"].value = passenger.dob;
+			form.elements["gender"].value = passenger.gender;
+			form.elements["address"].value = passenger.address;
+			form.elements["contact"].value = passenger.contact;
+			form.elements["idProof"].value = passenger.idProof;
 
-            // Ensure the ID field exists
-            let idField = form.querySelector("input[name='id']");
-            if (!idField) {
-                idField = document.createElement("input");
-                idField.type = "hidden";
-                idField.name = "id";
-                form.appendChild(idField);
-            }
-            idField.value = passenger.id;
+			// Ensure the ID field exists
+			let idField = form.querySelector("input[name='id']");
+			if (!idField) {
+				idField = document.createElement("input");
+				idField.type = "hidden";
+				idField.name = "id";
+				form.appendChild(idField);
+			}
+			idField.value = passenger.id;
 
-            // Change save button behavior to update
-            document.getElementById("savePassengerBtn").setAttribute("onclick", "updatePassenger()");
-        })
-        .catch(error => console.error("Error fetching passenger details:", error));
+			// Change save button behavior to update
+			document.getElementById("savePassengerBtn").setAttribute("onclick", "updatePassenger()");
+		})
+		.catch(error => console.error("Error fetching passenger details:", error));
 }
 
 // Function to update passenger details
@@ -625,60 +625,122 @@ function confirmBooking() {
 
 	// Create the ticket UI dynamically
 	let ticketHTML = `
-    <div class="ticket-container">
-        <div class="ticket">
-            <div class="ticket-body">
-                <div class="grid 5">
-                    <div class="heading">Class</div>
-                    <div class="heading">Ticket Type</div>
-                    <div class="heading">Adult</div>
-                    <div class="heading">Child</div>
-                    <div class="heading"></div>
-                    <div class="content">${selectedTrain.trainClass}</div>
-                    <div class="content">Advance</div>
-                    <div class="content">${selectedPassengers.length}</div>
-                    <div class="content">${selectedPassengers.length === 1 ? 'NIL' : selectedPassengers.length - 1}</div>
-                    <div class="content">PMS</div>
-                </div>
-                <div class="grid 5">
-                    <div class="heading">From</div>
-                    <div class="heading"></div>
-                    <div class="heading">Valid Until</div>
-                    <div class="heading"></div>
-                    <div class="heading">Price</div>
-                    <div class="content">${selectedTrain.trainNo}</div>
-                    <div class="content"></div>
-                    <div class="content">${new Date().toDateString()}</div>
-                    <div class="content"></div>
-                    <div class="content">$${selectedTrain.price}</div>
-                </div>
-                <div class="grid 5">
-                    <div class="heading">To</div>
-                    <div class="heading">Route</div>
-                    <div class="heading"></div>
-                    <div class="heading"></div>
-                    <div class="heading"></div>
-                    <div class="content">Destination</div>
-                    <div class="content">ANY</div>
-                </div>
-            </div>
-        </div>
-    </div>`;
+	    <div class="ticket-main-content">
+	        <div class="ticket">
+	            <div class="ticket__main">
+	                <div class="header">${selectedTrain.trainName}</div>
+
+	                <div class="info passenger">
+	                    <div class="info__item">Passenger</div>
+	                    <div class="info__detail">Bhaskar</div>
+	                </div>
+
+	                <div class="info platform">
+	                    <span>Depart</span>
+	                    <span>from</span>
+	                    <span>platform</span>
+	                    <div class="number">
+	                        <div>9</div>
+	                        <div>
+	                            <span>3</span>
+	                            <span>4</span>
+	                        </div>
+	                    </div>
+	                </div>
+
+	                <div class="info departure">
+	                    <div class="info__item">Depart</div>
+	                    <div class="info__detail">Kashmir</div>
+	                </div>
+
+	                <div class="info arrival">
+	                    <div class="info__item">Arrive</div>
+	                    <div class="info__detail">Kolkata</div>
+	                </div>
+
+	                <div class="info date">
+	                    <div class="info__item">Date</div>
+	                    <div class="info__detail">${new Date().toDateString()}</div>
+	                </div>
+
+	                <div class="info time">
+	                    <div class="info__item">Time</div>
+	                    <div class="info__detail">11:00AM</div>
+	                </div>
+
+	                <div class="info carriage">
+	                    <div class="info__item">Car</div>
+	                    <div class="info__detail">4</div>
+	                </div>
+
+	                <div class="info seat">
+	                    <div class="info__item">Seat</div>
+	                    <div class="info__detail">6B</div>
+	                </div>
+
+	                <div class="fineprint">
+	                    <p>Boarding begins 30 minutes before departure. Snacks available for purchase from The HungerBox App.</p>
+	                    <p>This ticket is Non-refundable • PassengerHub Authority</p>
+	                </div>
+
+	                <div class="snack">
+					<svg x="0px" y="0px" viewBox="0 0 92.81 122.88" style="enable-background:new 0 0 92.81 122.88" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style><g><path class="st0" d="M66.69,101.35H26.68l-4.7,6.94h49.24L66.69,101.35L66.69,101.35z M17.56,114.81l-5.47,8.07H0l19.64-29.46 h-3.49c-4.76,0-8.66-3.9-8.66-8.66V8.66C7.5,3.9,11.39,0,16.15,0h61.22c4.76,0,8.66,3.9,8.66,8.66v76.1c0,4.76-3.9,8.66-8.66,8.66 h-3.4l18.83,29.04H80.45l-4.99-7.65H17.56L17.56,114.81z M62.97,67.66h10.48c1.14,0,2.07,0.93,2.07,2.07V80.2 c0,1.14-0.93,2.07-2.07,2.07H62.97c-1.14,0-2.07-0.93-2.07-2.07V69.72C60.9,68.59,61.83,67.66,62.97,67.66L62.97,67.66z M18.98,67.66h10.48c1.14,0,2.07,0.93,2.07,2.07V80.2c0,1.14-0.93,2.07-2.07,2.07H18.98c-1.14,0-2.07-0.93-2.07-2.07V69.72 C16.91,68.59,17.84,67.66,18.98,67.66L18.98,67.66z M25.1,16.7h42.81c4.6,0,8.36,3.76,8.36,8.37v13.17c0,4.6-3.76,8.36-8.36,8.36 H25.1c-4.6,0-8.36-3.76-8.36-8.36V25.07C16.74,20.47,20.5,16.7,25.1,16.7L25.1,16.7z M38.33,3.8h16.2C55.34,3.8,56,4.46,56,5.27 v6.38c0,0.81-0.66,1.47-1.47,1.47h-16.2c-0.81,0-1.47-0.66-1.47-1.47V5.27C36.85,4.46,37.51,3.8,38.33,3.8L38.33,3.8z"/></g></svg>
+	                </div>
+
+	                <div class="barcode">
+	                    <div class="barcode__scan"></div>
+	                    <div class="barcode__id">${data.pnr}</div>
+	                </div>
+	            </div>
+
+	            <div class="ticket__side">
+	                <div class="logo">
+	                    <p>${selectedTrain.trainName}</p>
+	                </div>
+
+	                <div class="info side-arrive">
+	                    <div class="info__item">Arrive</div>
+	                    <div class="info__detail">Kolkata</div>
+	                </div>
+
+	                <div class="info side-depart">
+	                    <div class="info__item">Depart</div>
+	                    <div class="info__detail">Kashmir</div>
+	                </div>
+
+	                <div class="info side-date">
+	                    <div class="info__item">Date</div>
+	                    <div class="info__detail">${travelDate}</div>
+	                </div>
+
+	                <div class="info side-time">
+	                    <div class="info__item">Time</div>
+	                    <div class="info__detail">11:00AM</div>
+	                </div>
+
+	                <div class="barcode">
+	                    <div class="barcode__scan"></div>
+	                    <div class="barcode__id">${data.pnr}</div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	`;
 
 	// Replace the left panel with the ticket UI
-	let leftPanel = document.querySelector(".left-panel");
-	if (leftPanel) {
-		leftPanel.outerHTML = ticketHTML; // Completely replace it
+	let rightPanel = document.querySelector(".right-panel");
+	if (rightPanel) {
+		rightPanel.outerHTML = ticketHTML; // Completely replace it
 	}
 
 	let confirmBookingBtn = document.getElementById("confirmBookingBtn");
 	if (confirmBookingBtn) confirmBookingBtn.style.display = "none";
 
-	/*    // Hide the right panel after booking
-		let rightPanel = document.querySelector(".right-panel");
-		if (rightPanel) {
-			rightPanel.style.display = "none";
-		}*/
+	// Hide the right panel after booking
+	let leftPanel = document.querySelector(".left-panel");
+	if (leftPanel) {
+		leftPanel.style.display = "none";
+	}
 }
 
 // Function to Attach Search Listener After the Ticket Bookings Page Loads
